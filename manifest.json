@@ -1,0 +1,23 @@
+{
+  "name": "Simply Sudoku",
+  "short_name": "Simply Sudoku",
+  "description": "A simple sudoku app",
+  "lang": "en-US",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#fff",
+  "background_color": "#fff",
+  "icons": [
+    {
+        "src": "assets/192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    },
+    {
+        "src": "assets/256x256.png",
+        "sizes": "256x256",
+        "type": "image/png"
+    }
+  ]
+}

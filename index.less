@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+}
+
+html {  
+  // Defining 1rem, and using it to responsively layout page.
+  font-size: 1vmin; 
+	@media (min-width: 600px) and (min-height: 600px) {
+		font-size: 6px;
+	}
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// To hide the spinners.
+input[type=number] { 
+  -moz-appearance: textfield; 
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.sudoku{  
+  display: grid;
+  grid-template-columns: repeat(9, auto);
+  grid-gap: 1rem;
+  
+  .cell {
+    width: 8rem; height: 8rem;
+    font-size: 4rem;
+    text-align: center;
+    
+    &:nth-child(3), &:nth-child(6)   { margin-right: 2rem; }
+    &:nth-child(27), &:nth-child(54) { margin-bottom: 2rem; }
+    
+    &[disabled] {
+      border: none;
+      background: #eee;
+      font-weight: bold;
+    }
+    
+    //&:invalid {
+    &[data-error="true"] {
+      color: red;
+    }
+  }
+}

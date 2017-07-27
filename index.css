@@ -1,0 +1,52 @@
+* {
+  box-sizing: border-box;
+}
+html {
+  font-size: 1vmin;
+}
+@media (min-width: 600px) and (min-height: 600px) {
+  html {
+    font-size: 6px;
+  }
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.sudoku {
+  display: grid;
+  grid-template-columns: repeat(9, auto);
+  grid-gap: 1rem;
+}
+.sudoku .cell {
+  width: 8rem;
+  height: 8rem;
+  font-size: 4rem;
+  text-align: center;
+}
+.sudoku .cell:nth-child(3),
+.sudoku .cell:nth-child(6) {
+  margin-right: 2rem;
+}
+.sudoku .cell:nth-child(27),
+.sudoku .cell:nth-child(54) {
+  margin-bottom: 2rem;
+}
+.sudoku .cell[disabled] {
+  border: none;
+  background: #eee;
+  font-weight: bold;
+}
+.sudoku .cell[data-error="true"] {
+  color: red;
+}
