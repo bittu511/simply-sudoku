@@ -10,6 +10,7 @@ self.addEventListener('install', e => {
         'libs/xstream.min.js',
         'libs/cycle-run.min.js',
         'libs/cycle-dom.min.js',
+        'libs/webcomponents-lite.js',
       ].map(r => r+'?'+Math.random()))         //DEBUG: Cache invalidation.
     })
   )

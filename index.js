@@ -31,8 +31,8 @@ const main = ({DOM}) => {
       .map(({target, key, keyCode}) => ({
         // x: i/9 | 0,  // No longer needed as the coordinates are set as data-attrs
         // y: i%9,      // which actually makes no diff. It's a matter of where to put your words...
-        x: parseInt(target.dataset.x), 
-        y: parseInt(target.dataset.y), 
+        x: parseInt(target.dataset.x),
+        y: parseInt(target.dataset.y),
         value: (keyCode === 8 || keyCode === 46) ? 0 : parseInt(key) // delete backspace or value
       }))
       .filter(({value}) => !isNaN(value))
@@ -43,7 +43,7 @@ const main = ({DOM}) => {
     DOM.select('.sudoku').events('keydown')
       .map(({keyCode}) => {
         switch (keyCode) {
-          case 37: 
+          case 37:
             return {x: 0, y: -1}
           case 38:
             return {x: -1, y: 0}
@@ -52,7 +52,7 @@ const main = ({DOM}) => {
           case 40:
             return {x: 1, y: 0}
           default:
-            return {x: 0, y: 0}        
+            return {x: 0, y: 0}
         }
       })
       .map((m) => (m.inc = true, m)),
@@ -77,7 +77,7 @@ const main = ({DOM}) => {
     for (let i of board) {
       for (let j of i) {
         j.err = false
-      }      
+      }
     }
     
     // Space-efficient and time-inefficient implementation
@@ -100,7 +100,7 @@ const main = ({DOM}) => {
         if (values[k].length > 1)
           for (let m of values[k]) board[m][i].err = true
       }
-    }    
+    }
     //check supercellwise
     for (let i = 0; i < 9; i+= 3) {
       for (let j = 0; j < 9; j+= 3) {
@@ -113,7 +113,7 @@ const main = ({DOM}) => {
         for (let x = 1; x < values.length; x++) {
           if (values[x].length > 1)
             for (let m of values[x]) board[m[0]][m[1]].err = true
-        }        
+        }
       }
     }
     
@@ -122,14 +122,14 @@ const main = ({DOM}) => {
     //   rowwise:       zeroes(9, 10).map(_ => _.map(_ => [])),
     //   colwise:       zeroes(9, 10).map(_ => _.map(_ => [])),
     //   supercellwise: zeroes(9, 10).map(_ => _.map(_ => [])),
-    // }    
+    // }
     // for (let row in board)
     //   for (let col in board[row]) {
     //     let cell = board[row][col]
     //     collisions.rowwise[row][cell.value].push(cell)
     //     collisions.colwise[col][cell.value].push(cell)
     //     collisions.supercellwise[(row/3|0)*3 + col/3|0][cell.value].push(cell)
-    //   }    
+    //   }
     // for (let sets in collisions)
     //   for (let set of collisions[sets])
     //     for (let i = 1; i < set.length; i++)
@@ -146,7 +146,7 @@ const main = ({DOM}) => {
     (board, {x, y, value}) => (
       board[x][y].value = value,
       checkConflict(board)
-    ), 
+    ),
     board
   )
   //TODO: Persist game-state locally!!
@@ -156,12 +156,12 @@ const main = ({DOM}) => {
   .fold((focus, movement) => {
     if (movement.inc) {
       return {
-        x: (focus.x + movement.x + 9) % 9, 
+        x: (focus.x + movement.x + 9) % 9,
         y: (focus.y + movement.y + 9) % 9
       }
     } else {
       return {
-        x: movement.x, 
+        x: movement.x,
         y: movement.y
       }
     }
@@ -177,7 +177,7 @@ const main = ({DOM}) => {
         .map(({value, given, err}, i) => h('input.cell', {
           attrs: {
             type: 'number',
-            'data-x': i/9 | 0,  // Decided to put coords in data, 
+            'data-x': i/9 | 0,  // Decided to put coords in data,
             'data-y': i%9,      // makes no diff than calculating it during 'intent' really
             'data-error': err   // Flagging errors in custom attr instead of class to preserve focus
                                 //TODO: Should be done by marking the input element as invalid the standard way; needs a Driver.
@@ -206,7 +206,7 @@ const drivers = {
         if (!cell.disabled) cell.focus() //TODO: Ideally, skip over disabled cells in the model, not the driver.
       },
       error: () => {},
-      complete: () => {}      
+      complete: () => {}
     })
   }
 }

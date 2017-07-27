@@ -2,9 +2,9 @@
   box-sizing: border-box;
 }
 
-html {  
+html {
   // Defining 1rem, and using it to responsively layout page.
-  font-size: 1vmin; 
+  font-size: 1vmin;
 	@media (min-width: 600px) and (min-height: 600px) {
 		font-size: 6px;
 	}
@@ -18,16 +18,16 @@ body {
 }
 
 // To hide the spinners.
-input[type=number] { 
-  -moz-appearance: textfield; 
+input[type=number] {
+  -moz-appearance: textfield;
 }
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.sudoku{  
+.sudoku{
   display: grid;
   grid-template-columns: repeat(9, auto);
   grid-gap: 1rem;
