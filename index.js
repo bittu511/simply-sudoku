@@ -149,7 +149,6 @@ const main = ({DOM}) => {
     ),
     board
   )
-  //TODO: Do something for wins.
   
   const focuse$ = movement$
   .fold((focus, movement) => {
@@ -192,7 +191,16 @@ const main = ({DOM}) => {
   return {
     DOM: vdom$,
     FOCUS: focuse$.map(({x, y}) => 1 + x*9 + y),
-    STORE: board$
+    STORE: board$,
+    WIN: board$.filter(board => {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (board[i][j].value === 0 || board[i][j].err)
+            return false
+        }
+      }
+      return true
+    })
   }
 
 }
@@ -215,6 +223,17 @@ const drivers = {
         const key = 'board'
         const val = JSON.stringify(board)
         window.localStorage.setItem(key, val)
+      },
+      error: () => {},
+      complete: () => {}
+    })
+  },
+  WIN: (board$) => {
+    board$.subscribe({
+      next: board => {
+        //TODO: Make it FANCEH!
+        setTimeout(() => alert("At last...!! You Win... :("), 200)
+        window.localStorage.removeItem('board')
       },
       error: () => {},
       complete: () => {}
