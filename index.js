@@ -140,7 +140,7 @@ const main = ({DOM}) => {
   }
   
   const board = makePuzzle(puzzles[0])
-  // console.log(board)
+  //TODO: Implement localstorage loading, if any.
   
   const board$ = change$.fold(
     (board, {x, y, value}) => (
@@ -149,7 +149,6 @@ const main = ({DOM}) => {
     ),
     board
   )
-  //TODO: Persist game-state locally!!
   //TODO: Do something for wins.
   
   const focuse$ = movement$
@@ -208,6 +207,9 @@ const drivers = {
       error: () => {},
       complete: () => {}
     })
+  },
+  STORE: (model$) => {
+    //TODO: Implement localstorage saving.
   }
 }
 
