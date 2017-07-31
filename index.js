@@ -141,7 +141,6 @@ const main = ({DOM}) => {
   
   const load = window.localStorage.getItem('board')
   const board = load !== null ? JSON.parse(load) : makePuzzle(puzzles[0])
-  //TODO: Implement localstorage loading, if any.
   
   const board$ = change$.fold(
     (board, {x, y, value}) => (
@@ -211,13 +210,11 @@ const drivers = {
     })
   },
   STORE: (board$) => {
-    //TODO: Implement localstorage saving.
     board$.subscribe({
       next: board => {
         const key = 'board'
         const val = JSON.stringify(board)
         window.localStorage.setItem(key, val)
-        // console.log(window.localStorage.getItem(key))
       },
       error: () => {},
       complete: () => {}
