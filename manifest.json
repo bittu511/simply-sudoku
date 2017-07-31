@@ -3,7 +3,7 @@
   "short_name": "Simply Sudoku",
   "description": "A simple sudoku app",
   "lang": "en-US",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#fff",
