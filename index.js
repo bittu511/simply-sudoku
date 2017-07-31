@@ -139,7 +139,8 @@ const main = ({DOM}) => {
     return board
   }
   
-  const board = makePuzzle(puzzles[0])
+  const load = window.localStorage.getItem('board')
+  const board = load !== null ? JSON.parse(load) : makePuzzle(puzzles[0])
   //TODO: Implement localstorage loading, if any.
   
   const board$ = change$.fold(
@@ -191,7 +192,8 @@ const main = ({DOM}) => {
   
   return {
     DOM: vdom$,
-    FOCUS: focuse$.map(({x, y}) => 1 + x*9 + y)
+    FOCUS: focuse$.map(({x, y}) => 1 + x*9 + y),
+    STORE: board$
   }
 
 }
@@ -208,8 +210,18 @@ const drivers = {
       complete: () => {}
     })
   },
-  STORE: (model$) => {
+  STORE: (board$) => {
     //TODO: Implement localstorage saving.
+    board$.subscribe({
+      next: board => {
+        const key = 'board'
+        const val = JSON.stringify(board)
+        window.localStorage.setItem(key, val)
+        // console.log(window.localStorage.getItem(key))
+      },
+      error: () => {},
+      complete: () => {}
+    })
   }
 }
 
