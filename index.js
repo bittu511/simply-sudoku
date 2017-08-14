@@ -26,7 +26,7 @@ const main = ({DOM}) => {
   const change$ = xs.merge(...range(81)
     .map((i) => DOM
       .select(`.sudoku x-cell:nth-child(${i+1})`)
-      .events('valueChanged')
+      .events('valueChanged') //TODO: Simply doesn't get any events. No idea why.
       // .map((ev) => (ev.preventDefault(), ev))
       .map(({target, detail}) => ({
         // x: i/9 | 0,  // No longer needed as the coordinates are set as data-attrs

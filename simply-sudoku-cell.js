@@ -67,7 +67,6 @@ window.customElements.define(
     // This method actually fills in our template
     render () {
       const root = this.shadow.querySelector('.x-cell')
-      
       root.innerHTML = `
           <div class = "cell
               ${(this.hasAttribute('disabled') ? 'disabled' : '')}
@@ -92,7 +91,6 @@ window.customElements.define(
         // cell.innerText = e
         this.setAttribute('value', e)
         this.dispatchEvent(new CustomEvent('valueChanged', { detail: { value: e }}))
-        //TODO: This event is flagged as untrusted, and probably that's why CycleDOM is ignoring it. Fix.
       })
       
     }
