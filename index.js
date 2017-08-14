@@ -179,7 +179,6 @@ const main = ({DOM}) => {
             'data-y': i%9,      // makes no diff than calculating it during 'intent' really
             'err': err,         // Flagging errors in custom attr instead of class to preserve focus
                                 //TODO: Should be done by marking the input element as invalid the standard way; needs a Driver.
-                                //TODO: Why is this boolean attribute not acting like `disabled`, like an HTML booleam attr?
             'value': value || '',
             'disabled': given,
           },
