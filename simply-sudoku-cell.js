@@ -71,7 +71,7 @@ window.customElements.define(
       root.innerHTML = `
           <div class = "cell
               ${(this.hasAttribute('disabled') ? 'disabled' : '')}
-              ${(this.getAttribute('err') === 'true' ? 'err' : '')}">
+              ${(this.hasAttribute('err') ? 'err' : '')}">
               ${this.getAttribute('value')}</div>
           <div class = "dial"></div>
       `
