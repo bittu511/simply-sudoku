@@ -20,8 +20,8 @@ window.customElements.define(
       this.shadow.innerHTML = `
         <style>
           .x-cell {
-            height: 30px;
-            width: 30px;
+            height: 100%;
+            width: 100%;
             display: grid;
             align-items: center;
             justify-items: center;
@@ -32,7 +32,9 @@ window.customElements.define(
             width: 100%;
             height: 100%;
             grid-area: 1 / 1 / 2 / 2;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
           .x-cell > .cell.disabled {
             color: grey;
