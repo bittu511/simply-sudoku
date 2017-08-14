@@ -1,12 +1,13 @@
-/*NOTE
-*DONE value     - integer   constrained to 0~9
-*DONE disabled  - boolean
-*DONE err     - boolean
-* focus()
-*DONE Clicking displays the radial menu centered on the element
-*DONE Clicking on a radial menu digit triggers the `valueChanged` event and then closes it
+/*
+* value     - integer   constrained to 0~9
+* disabled  - boolean
+* err       - boolean
+* Clicking displays the radial menu centered on the element
+* Clicking on a radial menu digit triggers the `valueChanged` event and then closes it
 * Dragging on a cell directly triggers `valueChanged` w/o showing the menu
 * Long pressing on cell triggers the `valueChanged` event with `0`
+* focus() //TODO:
+* When focused, the keyboard overwrites the value and triggers `valueChanged` //TODO:
  */
 
 window.customElements.define(
