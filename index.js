@@ -22,22 +22,17 @@ const puzzles = [
 const main = ({DOM}) => {
 
   /* Intent */
-  
-  const change$ = xs.merge(...range(81)
-    .map((i) => DOM
-      .select(`.sudoku x-cell:nth-child(${i+1})`)
-      .events('valueChanged') //TODO: Simply doesn't get any events. No idea why.
-      // .map((ev) => (ev.preventDefault(), ev))
-      .map(({target, detail}) => ({
-        // x: i/9 | 0,  // No longer needed as the coordinates are set as data-attrs
-        // y: i%9,      // which actually makes no diff. It's a matter of where to put your words...
-        x: parseInt(target.dataset.x),
-        y: parseInt(target.dataset.y),
-        value: parseInt(detail.value) // delete backspace or value
-      }))
-      .filter(({value}) => !isNaN(value))
-    )
-  )
+
+  const change$ = DOM
+    .select(`x-cell`)
+    .events('valueChanged')
+    // .map((ev) => (ev.preventDefault(), ev))
+    .map(({target, detail}) => ({
+      x: parseInt(target.dataset.x),
+      y: parseInt(target.dataset.y),
+      value: parseInt(detail.value), // delete backspace or value
+    }))
+    .filter(({value}) => !isNaN(value))
   
   const movement$ = xs.merge(
     DOM.select('.sudoku').events('keydown')

@@ -91,7 +91,10 @@ window.customElements.define(
         const e = Math.ceil(((r + (t/4 + t/9/2) + t) % t) / (t/9))
         // cell.innerText = e
         this.setAttribute('value', e)
-        this.dispatchEvent(new CustomEvent('valueChanged', { detail: { value: e }}))
+        this.dispatchEvent(new CustomEvent('valueChanged', {
+          detail: { value: e },
+          bubbles: true
+        }))
       })
       
     }
