@@ -28,25 +28,26 @@ input[type=number]::-webkit-outer-spin-button {
   grid-template-columns: repeat(9, auto);
   grid-gap: 1rem;
 }
-.sudoku .cell {
+.sudoku x-cell {
   width: 8rem;
   height: 8rem;
   font-size: 4rem;
   text-align: center;
+  border: 0.5rem solid rgba(0, 0, 0, 0.25);
 }
-.sudoku .cell:nth-child(3),
-.sudoku .cell:nth-child(6) {
+.sudoku x-cell:nth-child(3),
+.sudoku x-cell:nth-child(6) {
   margin-right: 2rem;
 }
-.sudoku .cell:nth-child(27),
-.sudoku .cell:nth-child(54) {
+.sudoku x-cell:nth-child(27),
+.sudoku x-cell:nth-child(54) {
   margin-bottom: 2rem;
 }
-.sudoku .cell[disabled] {
+.sudoku x-cell[disabled] {
   border: none;
   background: #eee;
   font-weight: bold;
 }
-.sudoku .cell[data-error="true"] {
+.sudoku x-cell[data-error="true"] {
   color: red;
 }

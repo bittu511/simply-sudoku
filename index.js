@@ -25,15 +25,15 @@ const main = ({DOM}) => {
   
   const change$ = xs.merge(...range(81)
     .map((i) => DOM
-      .select(`.sudoku .cell:nth-child(${i+1})`)
-      .events('keydown')
-      .map((ev) => (ev.preventDefault(), ev))
-      .map(({target, key, keyCode}) => ({
+      .select(`.sudoku x-cell:nth-child(${i+1})`)
+      .events('valueChanged')
+      // .map((ev) => (ev.preventDefault(), ev))
+      .map(({target, detail}) => ({
         // x: i/9 | 0,  // No longer needed as the coordinates are set as data-attrs
         // y: i%9,      // which actually makes no diff. It's a matter of where to put your words...
         x: parseInt(target.dataset.x),
         y: parseInt(target.dataset.y),
-        value: (keyCode === 8 || keyCode === 46) ? 0 : parseInt(key) // delete backspace or value
+        value: parseInt(detail.value) // delete backspace or value
       }))
       .filter(({value}) => !isNaN(value))
     )
@@ -149,6 +149,7 @@ const main = ({DOM}) => {
     ),
     board
   )
+  .debug()
   
   const focuse$ = movement$
   .fold((focus, movement) => {
@@ -172,18 +173,15 @@ const main = ({DOM}) => {
     (board) => h('div.sudoku',
       board
         .reduce((a, b) => a.concat(b), []) // flatten board
-        .map(({value, given, err}, i) => h('input.cell', {
+        .map(({value, given, err}, i) => h('x-cell', {
           attrs: {
-            type: 'number',
             'data-x': i/9 | 0,  // Decided to put coords in data,
             'data-y': i%9,      // makes no diff than calculating it during 'intent' really
-            'data-error': err   // Flagging errors in custom attr instead of class to preserve focus
+            'err': err,         // Flagging errors in custom attr instead of class to preserve focus
                                 //TODO: Should be done by marking the input element as invalid the standard way; needs a Driver.
+            'value': value || '',
+            'disabled': given,
           },
-          props: {
-            value: value || '',
-            disabled: given
-          }
         }))
     )
   )
@@ -211,7 +209,7 @@ const drivers = {
     focuse$.subscribe({
       next: i => {
         const cell = document.querySelector(`#container .sudoku .cell:nth-child(${i})`)
-        if (!cell.disabled) cell.focus() //TODO: Ideally, skip over disabled cells in the model, not the driver.
+        // if (!cell.disabled) cell.focus() //TODO: Ideally, skip over disabled cells in the model, not the driver.
       },
       error: () => {},
       complete: () => {}
