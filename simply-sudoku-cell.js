@@ -9,8 +9,6 @@
 * Long pressing on cell triggers the `valueChanged` event with `0`
  */
 
-//TODO: Convert prototype to webcomponent.
-
 window.customElements.define(
   'x-cell',
   class extends HTMLElement {
@@ -19,18 +17,6 @@ window.customElements.define(
       super()
       // Create the shadow root
       this.shadow = this.attachShadow({mode: 'open'})
-    }
-    static get observedAttributes() {return ['value', 'disabled', 'err']}
-    attributeChangedCallback (attr, oldValue, newValue) {
-      console.log(attr, oldValue, newValue)
-      this.render()
-    }
-    // This hook is called when the element is added to the DOM tree
-    connectedCallback () {
-      this.render()
-    }
-    // This method actually fills in our template
-    render () {
       this.shadow.innerHTML = `
         <style>
           .x-cell {
@@ -41,19 +27,17 @@ window.customElements.define(
             justify-items: center;
             cursor: pointer;
           }
-          .x-cell.disabled {
-            opacity: 0.5;
-          }
 
           .x-cell > .cell {
             width: 100%;
             height: 100%;
-            background-color: cyan;
             grid-area: 1 / 1 / 2 / 2;
             text-align: center;
-            line-height: 1.8em;
           }
-          .x-cell.err > .cell {
+          .x-cell > .cell.disabled {
+            color: grey;
+          }
+          .x-cell > .cell.err  {
             color: red;
           }
 
@@ -67,18 +51,36 @@ window.customElements.define(
             visibility: hidden;
           }
         </style>
-        <div class = "x-cell
-          ${(this.getAttribute('disabled') === 'true' ? 'disabled' : '')}
-          ${(this.getAttribute('err') === 'true' ? 'err' : '')}">
-          <div class = "cell">${this.getAttribute('value')}</div>
-          <div class = "dial"></div>
-        </div>
+        <div class = "x-cell"></div>
       `
+    }
+    static get observedAttributes() {return ['value', 'disabled', 'err']}
+    attributeChangedCallback (attr, oldValue, newValue) {
+      this.render()
+    }
+    // This hook is called when the element is added to the DOM tree
+    // connectedCallback () {
+    //   this.render()
+    // }
+    // This method actually fills in our template
+    render () {
+      const root = this.shadow.querySelector('.x-cell')
+      
+      root.innerHTML = `
+          <div class = "cell
+              ${(this.hasAttribute('disabled') ? 'disabled' : '')}
+              ${(this.getAttribute('err') === 'true' ? 'err' : '')}">
+              ${this.getAttribute('value')}</div>
+          <div class = "dial"></div>
+      `
+      
       const cell = this.shadow.querySelector('.cell')
       const dial = this.shadow.querySelector('.dial')
-      if (this.getAttribute('disabled') !== 'true') cell.addEventListener('click', (ev) => {
+      
+      if (!this.hasAttribute('disabled')) cell.addEventListener('click', (ev) => {
         dial.style.visibility = 'visible'
       })
+      
       dial.addEventListener('click', (ev) => {
         const x = ev.offsetX - ev.target.clientWidth/2
         const y = ev.offsetY - ev.target.clientHeight/2
@@ -88,8 +90,9 @@ window.customElements.define(
         // cell.innerText = e
         this.setAttribute('value', e)
         this.dispatchEvent(new CustomEvent('valueChanged', { detail: { value: e }}))
-        console.log('HERE IT IS : X:' + x + '  Y:' + y, e)
+        //TODO: This event is flagged as untrusted, and probably that's why CycleDOM is ignoring it. Fix.
       })
+      
     }
   }
 )
