@@ -44,23 +44,27 @@ window.customElements.define(
             color: red;
           }
 
-          .x-cell > .dial {
-            background: url("./assets/dial.svg");
-            background-size: 100% 100%;
+          .x-cell > .dialer {
             width: 480%;
             height: 480%;
             z-index: 100;
             grid-area: 1 / 1 / 2 / 2;
             visibility: hidden;
           }
-          .x-cell > .shadow {
+          .x-cell > .dialer > .dial {
+            width: 100%;
+            height: 100%;
+            background: url("./assets/dial.svg");
+            background-size: 100% 100%;
+          }
+          .x-cell > .dialer > .shadow {
             position: fixed;
             top: 0;
             bottom: 0;
             left: 0;
             right: 0;
             background: rgba(0, 0, 0, 0.65);
-            visibility: hidden;
+            z-index: -10;
           }
           
         </style>
@@ -83,36 +87,40 @@ window.customElements.define(
               ${(this.hasAttribute('disabled') ? 'disabled' : '')}
               ${(this.hasAttribute('err') ? 'err' : '')}">
               ${this.getAttribute('value')}</div>
-          <div class = "dial"></div>
-          <div class = "shadow"></div>
+          <div class = "dialer">
+            <div class = "dial"></div>
+            <div class = "shadow"></div>
+          </div>
       `
       
       const cell = this.shadow.querySelector('.cell')
+      const dialer = this.shadow.querySelector('.dialer')
       const dial = this.shadow.querySelector('.dial')
-      const shadow = this.shadow.querySelector('.shadow')
       
       if (!this.hasAttribute('disabled')) cell.addEventListener('click', (ev) => {
-        dial.style.visibility = 'visible'
-        shadow.style.visibility = 'visible'
+        dialer.style.visibility = 'visible'
+      })
+      if (!this.hasAttribute('disabled')) cell.addEventListener('mousedown', (ev) => {
+        dialer.style.visibility = 'visible'
       })
       
-      dial.addEventListener('click', (ev) => {
-        const x = ev.offsetX - ev.target.clientWidth/2
-        const y = ev.offsetY - ev.target.clientHeight/2
+      dialer.addEventListener('mouseup', (ev) => {
+        const x = ev.pageX - dial.offsetLeft - dial.clientWidth/2
+        const y = ev.pageY - dial.offsetTop - dial.clientHeight/2
         const t = Math.PI*2
+        const d = Math.sqrt(x*x + y*y)
         const r = Math.atan2(y, x)
         const e = Math.ceil(((r + (t/4 + t/9/2) + t) % t) / (t/9))
+        console.log({dial, pageX: ev.pageX, pageY: ev.pageY, left: dial.offsetLeft, top: dial.offsetTop, width: dial.clientWidth})
+        console.log({x, y, t, d, r, e, limit: dial.clientWidth/2**0.5 * 0.25})
         // cell.innerText = e
-        this.setAttribute('value', e)
-        this.dispatchEvent(new CustomEvent('valueChanged', {
-          detail: { value: e },
-          bubbles: true
-        }))
-      })
-      
-      shadow.addEventListener('click', (ev) => {
-        dial.style.visibility = 'hidden'
-        shadow.style.visibility = 'hidden'
+        if (d >= dial.clientWidth/2**0.5 * 0.25) {
+          this.setAttribute('value', e)
+          this.dispatchEvent(new CustomEvent('valueChanged', {
+            detail: { value: e },
+            bubbles: true
+          }))
+        }
       })
       
     }
