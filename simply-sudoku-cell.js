@@ -88,9 +88,9 @@ window.customElements.define(
           </div>
       `
       
-      const cell = this.shadow.querySelector('.cell')
-      const dialer = this.shadow.querySelector('.dialer')
-      const dial = this.shadow.querySelector('.dial')
+      const cell = root.querySelector('.cell')
+      const dialer = root.querySelector('.dialer')
+      const dial = root.querySelector('.dial')
       
       if (!this.hasAttribute('disabled')) cell.addEventListener('click', (ev) => {
         dialer.style.visibility = 'visible'
