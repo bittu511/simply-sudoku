@@ -234,3 +234,11 @@ const drivers = {
 }
 
 run(main, drivers)
+
+const preventMotion = (event) => {
+    window.scrollTo(0, 0)
+    event.preventDefault()
+    event.stopPropagation()
+}
+window.addEventListener('scroll', preventMotion, false)
+window.addEventListener('touchmove', preventMotion, false)

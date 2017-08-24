@@ -5,6 +5,7 @@
 html {
   font-size: 1vmin;
   font-family: sans-serif;
+  overflow: hidden;
 }
 @media (min-width: 600px) and (min-height: 600px) {
   html {
@@ -17,6 +18,8 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
+  touch-action: none;
 }
 input[type=number] {
   -moz-appearance: textfield;
