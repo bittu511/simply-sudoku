@@ -95,6 +95,7 @@ window.customElements.define(
       if (!this.hasAttribute('disabled')) cell.addEventListener('pointerdown', (ev) => {
         dialer.style.visibility = 'visible'
         dialer.style.opacity = '0'
+        ev.preventDefault()
       })
       
       const calcValue = (ev) => {
