@@ -18,6 +18,11 @@
         "src": "assets/256x256.png",
         "sizes": "256x256",
         "type": "image/png"
+    },
+    {
+        "src": "assets/512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
     }
   ]
 }
