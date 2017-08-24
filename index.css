@@ -30,8 +30,8 @@ input[type=number]::-webkit-outer-spin-button {
   grid-gap: 1rem;
 }
 .sudoku x-cell {
-  width: 8rem;
-  height: 8rem;
+  width: 7rem;
+  height: 7rem;
   font-size: 4rem;
   text-align: center;
   border: 0.5rem solid #eee;

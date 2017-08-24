@@ -47,8 +47,8 @@ window.customElements.define(
           .x-cell > .dial {
             background: url("./assets/dial.svg");
             background-size: 100% 100%;
-            width: 300%;
-            height: 300%;
+            width: 480%;
+            height: 480%;
             z-index: 100;
             grid-area: 1 / 1 / 2 / 2;
             visibility: hidden;
