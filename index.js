@@ -173,7 +173,6 @@ const main = ({DOM}) => {
             'data-x': i/9 | 0,  // Decided to put coords in data,
             'data-y': i%9,      // makes no diff than calculating it during 'intent' really
             'err': err,         // Flagging errors in custom attr instead of class to preserve focus
-                                //TODO: Should be done by marking the input element as invalid the standard way; needs a Driver.
             'value': value || '',
             'disabled': given,
           },
