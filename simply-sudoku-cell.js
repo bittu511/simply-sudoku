@@ -75,11 +75,6 @@ window.customElements.define(
     attributeChangedCallback (attr, oldValue, newValue) {
       this.render()
     }
-    // This hook is called when the element is added to the DOM tree
-    // connectedCallback () {
-    //   this.render()
-    // }
-    // This method actually fills in our template
     render () {
       const root = this.shadow.querySelector('.x-cell')
       root.innerHTML = `
@@ -111,9 +106,6 @@ window.customElements.define(
         const d = Math.sqrt(x*x + y*y)
         const r = Math.atan2(y, x)
         const e = Math.ceil(((r + (t/4 + t/9/2) + t) % t) / (t/9))
-        console.log({dial, pageX: ev.pageX, pageY: ev.pageY, left: dial.offsetLeft, top: dial.offsetTop, width: dial.clientWidth})
-        console.log({x, y, t, d, r, e, limit: dial.clientWidth/2**0.5 * 0.25})
-        // cell.innerText = e
         if (d >= dial.clientWidth/2**0.5 * 0.25) {
           this.setAttribute('value', e)
           this.dispatchEvent(new CustomEvent('valueChanged', {
@@ -122,7 +114,6 @@ window.customElements.define(
           }))
         }
       })
-      
     }
   }
 )
