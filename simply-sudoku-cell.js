@@ -92,7 +92,7 @@ window.customElements.define(
       const dialer = root.querySelector('.dialer')
       const dial = root.querySelector('.dial')
       
-      if (!this.hasAttribute('disabled')) cell.addEventListener('mousedown', (ev) => {
+      if (!this.hasAttribute('disabled')) cell.addEventListener('pointerdown', (ev) => {
         dialer.style.visibility = 'visible'
         dialer.style.opacity = '0'
       })
@@ -107,7 +107,7 @@ window.customElements.define(
         const l = d >= dial.clientWidth/2**0.5 * 0.25
         return { value: e, limit: l }
       }
-      dialer.addEventListener('mouseup', (ev) => {
+      dialer.addEventListener('pointerup', (ev) => {
         const { value, limit } = calcValue(ev)
         if (limit) {
           this.setAttribute('value', value)
@@ -120,7 +120,7 @@ window.customElements.define(
           //TODO: Only show dial if instantaneous, not if returning to neutral after a while.
         }
       })
-      dialer.addEventListener('mousemove', (ev) => {
+      dialer.addEventListener('pointermove', (ev) => {
         const { value, limit } = calcValue(ev)
         if (limit) {
           cell.innerHTML = value
