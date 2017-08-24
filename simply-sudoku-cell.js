@@ -91,11 +91,15 @@ window.customElements.define(
       const cell = root.querySelector('.cell')
       const dialer = root.querySelector('.dialer')
       const dial = root.querySelector('.dial')
+      const shadow = root.querySelector('.shadow')
       
       if (!this.hasAttribute('disabled')) cell.addEventListener('pointerdown', (ev) => {
         dialer.style.visibility = 'visible'
         dialer.style.opacity = '0'
         dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
+      })
+      shadow.addEventListener('click', (ev) => {
+        dialer.style.visibility = 'hidden'
       })
       
       const calcValue = (ev) => {
