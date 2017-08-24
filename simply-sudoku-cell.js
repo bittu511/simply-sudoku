@@ -97,21 +97,35 @@ window.customElements.define(
         dialer.style.opacity = '0'
       })
       
-      dialer.addEventListener('mouseup', (ev) => {
+      const calcValue = (ev) => {
         const x = ev.pageX - dial.offsetLeft - dial.clientWidth/2
         const y = ev.pageY - dial.offsetTop - dial.clientHeight/2
         const t = Math.PI*2
         const d = Math.sqrt(x*x + y*y)
         const r = Math.atan2(y, x)
         const e = Math.ceil(((r + (t/4 + t/9/2) + t) % t) / (t/9))
-        if (d >= dial.clientWidth/2**0.5 * 0.25) {
-          this.setAttribute('value', e)
+        const l = d >= dial.clientWidth/2**0.5 * 0.25
+        return { value: e, limit: l }
+      }
+      dialer.addEventListener('mouseup', (ev) => {
+        const { value, limit } = calcValue(ev)
+        if (limit) {
+          this.setAttribute('value', value)
           this.dispatchEvent(new CustomEvent('valueChanged', {
-            detail: { value: e },
+            detail: { value },
             bubbles: true
           }))
         } else {
           dialer.style.opacity = '1'
+          //TODO: Only show dial if instantaneous, not if returning to neutral after a while.
+        }
+      })
+      dialer.addEventListener('mousemove', (ev) => {
+        const { value, limit } = calcValue(ev)
+        if (limit) {
+          cell.innerHTML = value
+        } else {
+          cell.innerHTML = this.getAttribute('value')
         }
       })
     }
