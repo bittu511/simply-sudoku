@@ -108,8 +108,9 @@ window.customElements.define(
         const l = d >= dial.clientWidth/2**0.5 * 0.25
         return { value: e, limit: l }
       }
-      dialer.addEventListener('pointerup', (ev) => {
+      dialer.addEventListener('pointerup', (ev) => { //TODO: `pointerup` not working with touch.
         const { value, limit } = calcValue(ev)
+        console.log(value)
         if (limit) {
           this.setAttribute('value', value)
           this.dispatchEvent(new CustomEvent('valueChanged', {
@@ -121,7 +122,8 @@ window.customElements.define(
           //TODO: Only show dial if instantaneous, not if returning to neutral after a while.
         }
       })
-      dialer.addEventListener('pointermove', (ev) => {
+      dialer.addEventListener('pointermove', (ev) => { //TODO: `pointermove` not working with touch.
+        console.log(ev)
         const { value, limit } = calcValue(ev)
         if (limit) {
           cell.innerHTML = value
