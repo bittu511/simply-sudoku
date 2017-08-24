@@ -92,11 +92,9 @@ window.customElements.define(
       const dialer = root.querySelector('.dialer')
       const dial = root.querySelector('.dial')
       
-      if (!this.hasAttribute('disabled')) cell.addEventListener('click', (ev) => {
-        dialer.style.visibility = 'visible'
-      })
       if (!this.hasAttribute('disabled')) cell.addEventListener('mousedown', (ev) => {
         dialer.style.visibility = 'visible'
+        dialer.style.opacity = '0'
       })
       
       dialer.addEventListener('mouseup', (ev) => {
@@ -112,6 +110,8 @@ window.customElements.define(
             detail: { value: e },
             bubbles: true
           }))
+        } else {
+          dialer.style.opacity = '1'
         }
       })
     }
