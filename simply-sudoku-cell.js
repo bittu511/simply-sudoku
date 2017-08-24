@@ -53,6 +53,16 @@ window.customElements.define(
             grid-area: 1 / 1 / 2 / 2;
             visibility: hidden;
           }
+          .x-cell > .shadow {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.65);
+            visibility: hidden;
+          }
+          
         </style>
         <div class = "x-cell"></div>
       `
@@ -74,13 +84,16 @@ window.customElements.define(
               ${(this.hasAttribute('err') ? 'err' : '')}">
               ${this.getAttribute('value')}</div>
           <div class = "dial"></div>
+          <div class = "shadow"></div>
       `
       
       const cell = this.shadow.querySelector('.cell')
       const dial = this.shadow.querySelector('.dial')
+      const shadow = this.shadow.querySelector('.shadow')
       
       if (!this.hasAttribute('disabled')) cell.addEventListener('click', (ev) => {
         dial.style.visibility = 'visible'
+        shadow.style.visibility = 'visible'
       })
       
       dial.addEventListener('click', (ev) => {
@@ -95,6 +108,11 @@ window.customElements.define(
           detail: { value: e },
           bubbles: true
         }))
+      })
+      
+      shadow.addEventListener('click', (ev) => {
+        dial.style.visibility = 'hidden'
+        shadow.style.visibility = 'hidden'
       })
       
     }
