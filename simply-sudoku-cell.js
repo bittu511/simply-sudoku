@@ -104,6 +104,7 @@ window.customElements.define(
         dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
         dragged = false
         timeId = setTimeout(() => {
+          window.navigator.vibrate(200)
           this.setAttribute('value', '0')
           this.dispatchEvent(new CustomEvent('valueChanged', {
             detail: { value: 0 },
