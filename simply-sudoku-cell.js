@@ -87,7 +87,7 @@ window.customElements.define(
             <div class = "shadow"></div>
           </div>
       `
-      
+      let time = new Date()
       const cell = root.querySelector('.cell')
       const dialer = root.querySelector('.dialer')
       const dial = root.querySelector('.dial')
@@ -97,6 +97,7 @@ window.customElements.define(
         dialer.style.visibility = 'visible'
         dialer.style.opacity = '0'
         dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
+        time = new Date()
       })
       shadow.addEventListener('click', (ev) => {
         dialer.style.visibility = 'hidden'
@@ -121,6 +122,14 @@ window.customElements.define(
             bubbles: true
           }))
         } else {
+          let currtime = new Date() - time
+          if (currtime  >= 2000) {
+            this.setAttribute('value', 0)
+            this.dispatchEvent(new CustomEvent('valueChanged', {
+              detail: { value: 0 },
+              bubbles: true
+            }))
+          }
           dialer.style.opacity = '1'
           //TODO: Only show dial if instantaneous, not if returning to neutral after a while.
         }
