@@ -111,6 +111,7 @@ window.customElements.define(
           }))
         }, 500)
       })
+      
       shadow.addEventListener('click', (ev) => {
         dialer.style.visibility = 'hidden'
       })
@@ -125,15 +126,18 @@ window.customElements.define(
         const l = d >= dial.clientWidth/2**0.5 * 0.25
         return { value: e, limit: l }
       }
+      const changeValue = (value) => {
+        this.setAttribute('value', value)
+        this.dispatchEvent(new CustomEvent('valueChanged', {
+          detail: { value },
+          bubbles: true
+        }))
+      }
       dial.addEventListener('pointerup', (ev) => {
         clearTimeout(timeId)
         const { value, limit } = calcValue(ev)
         if (limit) {
-          this.setAttribute('value', value)
-          this.dispatchEvent(new CustomEvent('valueChanged', {
-            detail: { value },
-            bubbles: true
-          }))
+          changeValue(value)
           cell.classList.remove('preview')
         } else {
           if (!dragged) dialer.style.opacity = '1'
@@ -153,6 +157,12 @@ window.customElements.define(
             : this.getAttribute('value')
           cell.classList.remove('preview')
         }
+      })
+      dial.addEventListener('pointerleave', (ev) => {
+          cell.innerHTML = this.getAttribute('value') === '0'
+            ? ''
+            : this.getAttribute('value')
+          cell.classList.remove('preview')
       })
     }
   }
