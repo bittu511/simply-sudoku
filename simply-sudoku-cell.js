@@ -118,6 +118,7 @@ window.customElements.define(
       }
       
       if (!this.hasAttribute('disabled')) cell.addEventListener('pointerdown', (ev) => {
+        navigator.vibrate(5)
         dialer.style.visibility = 'visible'
         dialer.style.opacity = '0'
         dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
