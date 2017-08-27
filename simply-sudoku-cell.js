@@ -123,7 +123,7 @@ window.customElements.define(
         dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
         dragged = false
         timeId = setTimeout(() => {
-          changeValue(0, 400)
+          changeValue(0, 100)
         }, 500)
       })
       
