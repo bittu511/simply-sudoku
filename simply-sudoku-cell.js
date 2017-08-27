@@ -91,7 +91,7 @@ window.customElements.define(
             <div class = "shadow"></div>
           </div>
       `
-      let timeId
+      let dragged, timeId
       
       const cell = root.querySelector('.cell')
       const dialer = root.querySelector('.dialer')
@@ -102,6 +102,7 @@ window.customElements.define(
         dialer.style.visibility = 'visible'
         dialer.style.opacity = '0'
         dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
+        dragged = false
         timeId = setTimeout(() => {
           this.setAttribute('value', '0')
           this.dispatchEvent(new CustomEvent('valueChanged', {
@@ -135,13 +136,14 @@ window.customElements.define(
           }))
           cell.classList.remove('preview')
         } else {
-          dialer.style.opacity = '1'
-          //TODO: Only show dial if instantaneous, not if returning to neutral after a while.
+          if (!dragged) dialer.style.opacity = '1'
+          else dialer.style.visibility = 'hidden'
         }
       })
       dial.addEventListener('pointermove', (ev) => {
         const { value, limit } = calcValue(ev)
         if (limit) {
+          dragged = true
           clearTimeout(timeId)
           cell.innerHTML = value
           cell.classList.add('preview')
