@@ -81,7 +81,8 @@ window.customElements.define(
           <div class = "cell
               ${(this.hasAttribute('disabled') ? 'disabled' : '')}
               ${(this.hasAttribute('err') ? 'err' : '')}">
-              ${this.getAttribute('value')}</div>
+              ${this.getAttribute('value') === '0' ? '' : this.getAttribute('value')}
+          </div>
           <div class = "dialer">
             <div class = "dial"></div>
             <div class = "shadow"></div>
@@ -99,12 +100,12 @@ window.customElements.define(
         dialer.style.opacity = '0'
         dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
         timeId = setTimeout(() => {
-          this.setAttribute('value', 0)
+          this.setAttribute('value', '0')
           this.dispatchEvent(new CustomEvent('valueChanged', {
             detail: { value: 0 },
             bubbles: true
           }))
-        }, 2 * 1000)
+        }, 500)
       })
       shadow.addEventListener('click', (ev) => {
         dialer.style.visibility = 'hidden'
@@ -137,6 +138,7 @@ window.customElements.define(
       dial.addEventListener('pointermove', (ev) => {
         const { value, limit } = calcValue(ev)
         if (limit) {
+          clearTimeout(timeId)
           cell.innerHTML = value
         } else {
           cell.innerHTML = this.getAttribute('value')
