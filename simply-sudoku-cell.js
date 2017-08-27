@@ -91,31 +91,12 @@ window.customElements.define(
             <div class = "shadow"></div>
           </div>
       `
-      let dragged, timeId
       
       const cell = root.querySelector('.cell')
       const dialer = root.querySelector('.dialer')
       const dial = root.querySelector('.dial')
       const shadow = root.querySelector('.shadow')
-      
-      if (!this.hasAttribute('disabled')) cell.addEventListener('pointerdown', (ev) => {
-        dialer.style.visibility = 'visible'
-        dialer.style.opacity = '0'
-        dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
-        dragged = false
-        timeId = setTimeout(() => {
-          navigator.vibrate([500])
-          this.setAttribute('value', '0')
-          this.dispatchEvent(new CustomEvent('valueChanged', {
-            detail: { value: 0 },
-            bubbles: true
-          }))
-        }, 500)
-      })
-      
-      shadow.addEventListener('click', (ev) => {
-        dialer.style.visibility = 'hidden'
-      })
+      let dragged, timeId
       
       const calcValue = (ev) => {
         const x = ev.pageX - dial.offsetLeft - dial.clientWidth/2
@@ -127,13 +108,29 @@ window.customElements.define(
         const l = d >= dial.clientWidth/2**0.5 * 0.25
         return { value: e, limit: l }
       }
-      const changeValue = (value) => {
+      const changeValue = (value, vibrate=10) => {
+        navigator.vibrate(vibrate)
         this.setAttribute('value', value)
         this.dispatchEvent(new CustomEvent('valueChanged', {
           detail: { value },
           bubbles: true
         }))
       }
+      
+      if (!this.hasAttribute('disabled')) cell.addEventListener('pointerdown', (ev) => {
+        dialer.style.visibility = 'visible'
+        dialer.style.opacity = '0'
+        dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
+        dragged = false
+        timeId = setTimeout(() => {
+          changeValue(0, 400)
+        }, 500)
+      })
+      
+      shadow.addEventListener('click', (ev) => {
+        dialer.style.visibility = 'hidden'
+      })
+      
       dial.addEventListener('pointerup', (ev) => {
         clearTimeout(timeId)
         const { value, limit } = calcValue(ev)
