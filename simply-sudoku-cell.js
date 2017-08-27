@@ -43,6 +43,9 @@ window.customElements.define(
           .x-cell > .cell.err  {
             color: red;
           }
+          .x-cell > .cell.preview {
+            color: purple;
+          }
 
           .x-cell > .dialer {
             width: 480%;
@@ -130,6 +133,7 @@ window.customElements.define(
             detail: { value },
             bubbles: true
           }))
+          cell.classList.remove('preview')
         } else {
           dialer.style.opacity = '1'
           //TODO: Only show dial if instantaneous, not if returning to neutral after a while.
@@ -140,8 +144,12 @@ window.customElements.define(
         if (limit) {
           clearTimeout(timeId)
           cell.innerHTML = value
+          cell.classList.add('preview')
         } else {
-          cell.innerHTML = this.getAttribute('value')
+          cell.innerHTML = this.getAttribute('value') === '0'
+            ? ''
+            : this.getAttribute('value')
+          cell.classList.remove('preview')
         }
       })
     }
