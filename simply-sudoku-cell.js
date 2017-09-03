@@ -51,6 +51,9 @@ window.customElements.define(
           .x-cell > .cell:focus {
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
           }
+          .x-cell > .cell.disabled:focus {
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+          }
           
           .x-cell > .dialer {
             width: 480%;

@@ -158,7 +158,7 @@ const main = ({DOM}) => {
         y: movement.y
       }
     }
-  }, {x: 0, y: 0})
+  }, {x: 4, y: 4})
   //.debug()
 
   /* View */
