@@ -80,7 +80,7 @@ window.customElements.define(
     connectedCallback () {
       this.setAttribute('tabindex', '0')
       this.addEventListener('focus', () => {
-        this.shadow.querySelector('.x-cell > .cell').focus()
+        this.shadow.querySelector('.x-cell > .cell').focus() //TODO: Root still keep focus on first load and when clicking!
       })
     }
     static get observedAttributes() {return ['value', 'disabled', 'err']}
