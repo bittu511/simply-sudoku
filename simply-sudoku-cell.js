@@ -20,9 +20,6 @@ window.customElements.define(
       this.shadow = this.attachShadow({mode: 'open'})
       this.shadow.innerHTML = `
         <style>
-           :host, :host * { outline: none; }
-           :host:focus { border: 2px solid red; } /* NOTE: We want to focus on the root element, not working. */
-        
           .x-cell {
             height: 100%;
             width: 100%;
@@ -49,7 +46,10 @@ window.customElements.define(
           .x-cell > .cell.preview {
             color: purple;
           }
-
+          .x-cell > .cell:focus {
+            border: 2px solid black;
+          }
+          
           .x-cell > .dialer {
             width: 480%;
             height: 480%;
@@ -78,7 +78,10 @@ window.customElements.define(
       `
     }
     connectedCallback () {
-      this.setAttribute('tabindex', '0') //NOTE: we want to focus on the root element
+      this.setAttribute('tabindex', '0')
+      this.addEventListener('focus', () => {
+        this.shadow.querySelector('.x-cell > .cell').focus()
+      })
     }
     static get observedAttributes() {return ['value', 'disabled', 'err']}
     attributeChangedCallback (attr, oldValue, newValue) {
@@ -171,10 +174,9 @@ window.customElements.define(
           cell.classList.remove('preview')
       })
       
-      //NOTE: THIS IS NOT NEEDED...WE"VE TO SHIFT THOS TO X_CELL!!
       if (!this.hasAttribute('disabled')) {
         cell.addEventListener('keydown', (ev) => {
-          const p = parseInt(ev.key)
+          const p = ev.key
           const k = ev.keyCode
           if (p >= 1 && p <= 9) changeValue(p, 0)
           if (p == 0 || k == 8 || k == 46 || k == 110) changeValue(0, 0)
