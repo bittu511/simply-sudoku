@@ -20,6 +20,8 @@ window.customElements.define(
       this.shadow = this.attachShadow({mode: 'open'})
       this.shadow.innerHTML = `
         <style>
+          :host, :host *, .x-cell * { outline: none; }
+          
           .x-cell {
             height: 100%;
             width: 100%;
