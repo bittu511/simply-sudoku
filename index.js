@@ -26,11 +26,10 @@ const main = ({DOM}) => {
   const change$ = DOM
     .select(`x-cell`)
     .events('valueChanged')
-    // .map((ev) => (ev.preventDefault(), ev))
     .map(({target, detail}) => ({
       x: parseInt(target.dataset.x),
       y: parseInt(target.dataset.y),
-      value: parseInt(detail.value), // delete backspace or value
+      value: parseInt(detail.value),
     }))
     .filter(({value}) => !isNaN(value))
   
