@@ -50,7 +50,7 @@ const main = ({DOM}) => {
         }
       })
       .map((m) => (m.inc = true, m)),
-    DOM.select('x-cell').events('click')
+    DOM.select('x-cell').events('pointerdown')
       .map(({target}) => ({inc: false, x: parseInt(target.dataset.x), y: parseInt(target.dataset.y)}))
   )
 

@@ -47,7 +47,7 @@ window.customElements.define(
             color: purple;
           }
           .x-cell > .cell:focus {
-            border: 2px solid black;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
           }
           
           .x-cell > .dialer {
@@ -80,7 +80,7 @@ window.customElements.define(
     connectedCallback () {
       this.setAttribute('tabindex', '0')
       this.addEventListener('focus', () => {
-        this.shadow.querySelector('.x-cell > .cell').focus() //TODO: Root still keep focus on first load and when clicking!
+        this.shadow.querySelector('.x-cell > .cell').focus()
       })
     }
     static get observedAttributes() {return ['value', 'disabled', 'err']}
@@ -125,6 +125,7 @@ window.customElements.define(
           detail: { value },
           bubbles: true
         }))
+        this.focus()
       }
       
       if (!this.hasAttribute('disabled')) cell.addEventListener('pointerdown', (ev) => {
@@ -180,7 +181,6 @@ window.customElements.define(
           const k = ev.keyCode
           if (p >= 1 && p <= 9) changeValue(p, 0)
           if (p == 0 || k == 8 || k == 46 || k == 110) changeValue(0, 0)
-          //TODO: At the moment, focus is lost in every update. Needs to persist.
         })
       }
     }
