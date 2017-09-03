@@ -202,8 +202,8 @@ const drivers = {
   FOCUS: (focuse$) => { // Custom driver to focus elements.
     focuse$.subscribe({
       next: i => {
-        const cell = document.querySelector(`#container .sudoku .cell:nth-child(${i})`)
-        // if (!cell.disabled) cell.focus() //TODO: Ideally, skip over disabled cells in the model, not the driver.
+        const cell = document.querySelector(`#container .sudoku x-cell:nth-child(${i})`)
+        cell.focus()
       },
       error: () => {},
       complete: () => {}
