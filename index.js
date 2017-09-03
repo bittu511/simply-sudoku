@@ -144,7 +144,7 @@ const main = ({DOM}) => {
     ),
     board
   )
-  .debug()
+  //.debug()
   
   const focuse$ = movement$
   .fold((focus, movement) => {
@@ -160,7 +160,7 @@ const main = ({DOM}) => {
       }
     }
   }, {x: 0, y: 0})
-  .debug()
+  //.debug()
 
   /* View */
   
