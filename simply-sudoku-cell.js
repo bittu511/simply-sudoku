@@ -88,7 +88,7 @@ window.customElements.define(
         this.shadow.querySelector('.x-cell > .cell').focus()
       })
     }
-    static get observedAttributes() {return ['value', 'disabled', 'err']}
+    static get observedAttributes () { return ['value', 'disabled', 'err'] }
     attributeChangedCallback (attr, oldValue, newValue) {
       this.render()
     }
@@ -106,24 +106,24 @@ window.customElements.define(
             <div class = "shadow"></div>
           </div>
       `
-      
+
       const cell = root.querySelector('.cell')
       const dialer = root.querySelector('.dialer')
       const dial = root.querySelector('.dial')
       const shadow = root.querySelector('.shadow')
       let dragged, timeId
-      
+
       const calcValue = (ev) => {
-        const x = ev.pageX - dial.offsetLeft - dial.clientWidth/2
-        const y = ev.pageY - dial.offsetTop - dial.clientHeight/2
-        const t = Math.PI*2
-        const d = Math.sqrt(x*x + y*y)
+        const x = ev.pageX - dial.offsetLeft - dial.clientWidth / 2
+        const y = ev.pageY - dial.offsetTop - dial.clientHeight / 2
+        const t = Math.PI * 2
+        const d = Math.sqrt(x * x + y * y)
         const r = Math.atan2(y, x)
-        const e = Math.ceil(((r + (t/4 + t/9/2) + t) % t) / (t/9))
-        const l = d >= dial.clientWidth/2**0.5 * 0.25
+        const e = Math.ceil(((r + (t / 4 + t / 9 / 2) + t) % t) / (t / 9))
+        const l = d >= dial.clientWidth / 2 ** 0.5 * 0.25
         return { value: e, limit: l }
       }
-      const changeValue = (value, vibrate=10) => {
+      const changeValue = (value, vibrate = 10) => {
         navigator.vibrate(vibrate)
         this.setAttribute('value', value)
         this.dispatchEvent(new CustomEvent('valueChanged', {
@@ -132,22 +132,24 @@ window.customElements.define(
         }))
         this.focus()
       }
-      
-      if (!this.hasAttribute('disabled')) cell.addEventListener('pointerdown', (ev) => {
-        navigator.vibrate(5)
-        dialer.style.visibility = 'visible'
-        dialer.style.opacity = '0'
-        dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
-        dragged = false
-        timeId = setTimeout(() => {
-          changeValue(0, 100)
-        }, 500)
-      })
-      
+
+      if (!this.hasAttribute('disabled')) {
+        cell.addEventListener('pointerdown', (ev) => {
+          navigator.vibrate(5)
+          dialer.style.visibility = 'visible'
+          dialer.style.opacity = '0'
+          dial.setPointerCapture(ev.pointerId) // Doesn't work until a new pointer event otherwise.
+          dragged = false
+          timeId = setTimeout(() => {
+            changeValue(0, 100)
+          }, 500)
+        })
+      }
+
       shadow.addEventListener('click', (ev) => {
         dialer.style.visibility = 'hidden'
       })
-      
+
       dial.addEventListener('pointerup', (ev) => {
         clearTimeout(timeId)
         const { value, limit } = calcValue(ev)
@@ -174,21 +176,20 @@ window.customElements.define(
         }
       })
       dial.addEventListener('pointerleave', (ev) => {
-          cell.innerHTML = this.getAttribute('value') === '0'
-            ? ''
-            : this.getAttribute('value')
-          cell.classList.remove('preview')
+        cell.innerHTML = this.getAttribute('value') === '0'
+          ? ''
+          : this.getAttribute('value')
+        cell.classList.remove('preview')
       })
-      
+
       if (!this.hasAttribute('disabled')) {
         cell.addEventListener('keydown', (ev) => {
           const p = ev.key
           const k = ev.keyCode
           if (p >= 1 && p <= 9) changeValue(p, 0)
-          if (p == 0 || k == 8 || k == 46 || k == 110) changeValue(0, 0)
+          if (p === 0 || k === 8 || k === 46 || k === 110) changeValue(0, 0)
         })
       }
     }
-    
   }
 )
