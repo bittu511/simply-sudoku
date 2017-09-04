@@ -1,13 +1,16 @@
 /*
-* value     - integer   constrained to 0~9
-* disabled  - boolean
-* err       - boolean
-* Clicking displays the radial menu centered on the element
-* Clicking on a radial menu digit triggers the `valueChanged` event and then closes it
-* Dragging on a cell directly triggers `valueChanged` w/o showing the menu
-* Long pressing on cell triggers the `valueChanged` event with `0`
-* focus() //TODO:
-* When focused, the keyboard overwrites the value and triggers `valueChanged` //TODO:
+* Attributes:
+*   value     - integer   constrained to 0~9
+*   disabled  - boolean
+*   err       - boolean
+* Behaviors:
+*   Clicking displays the radial menu centered on the element
+*   Clicking on a radial triggers the `valueChanged` event and then closes it
+*   Dragging on a cell directly triggers `valueChanged` w/o showing the menu
+*   Potential new value is previewed when hovering over a dial or gesturing
+*   Long pressing on a cell triggers the `valueChanged` event with `0`
+*   The cell has a `tabIndex = 0` and can be `focus()`ed
+*   When focused, the keyboard overwrites the value and triggers `valueChanged`
  */
 
 window.customElements.define(
