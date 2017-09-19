@@ -1,4 +1,4 @@
-/* global xstream CycleDOM Cycle */
+/* global xstream CycleDOM Cycle anime */
 
 const {default: xs} = xstream // https://github.com/staltz/xstream
 const {makeDOMDriver, h} = CycleDOM
@@ -8,13 +8,26 @@ const range = (n) => new Array(n).fill().map((_, i) => i)
 const zeroes = (d, ...ds) => !d ? 0 : new Array(d).fill().map(() => zeroes(...ds))
 
 winanimate = () => {
-  anime({
-    targets: '#winner > h1',
-    scale: [0, 1],
-    duration: 3000,
-    easing: 'easeInQuad'
+  const seq = anime.timeline({
+    autoplay: true
   })
+  document.querySelector('#winner > .video').play() // NOTE: The win animation sequence must be played on a user interaction or the video won't play!
+  seq
+    .add(anime({
+      targets: '#winner',
+      opacity: [0, 1],
+      duration: 500,
+      easing: 'easeInQuad'
+    }))
+    .add(anime({
+      targets: '#winner > h1',
+      scale: [0, 1],
+      duration: 2000,
+      easing: 'easeInQuad',
+      offset: -300,
+    }))
 }
+document.body.addEventListener('click', winanimate)
 
 const puzzles = [
   `
