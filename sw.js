@@ -1,7 +1,7 @@
 self.addEventListener('install', e => {
-  e.waitUntil(                                 // Wait until the cache is ready
+  e.waitUntil( // Wait until the cache is ready
     caches.open('pwa-assets').then(cache => {
-      return cache.addAll([                    // and cache all the files you want available offline.
+      return cache.addAll([ // and cache all the files you want available offline.
         'index.html',
         'index.css',
         'index.js',
@@ -10,15 +10,16 @@ self.addEventListener('install', e => {
         'libs/cycle-run.min.js',
         'libs/cycle-dom.min.js',
         'libs/webcomponents-lite.js',
-      ].map(r => r+'?'+Math.random()))         //DEBUG: Cache invalidation.
+        'libs/anime.min.js',
+      ].map(r => r + '?' + Math.random())) // DEBUG: Cache invalidation.
     })
   )
 })
 
 self.addEventListener('fetch', e => {
-  e.respondWith(                               // Respond to every fetch quest
+  e.respondWith( // Respond to every fetch quest
     caches.match(e.request).then(response => { // with cached file, or the the fetch itself.
-      return response || fetch(e.request);
+      return response || fetch(e.request)
     })
   )
 })

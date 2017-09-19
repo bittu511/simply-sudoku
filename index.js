@@ -7,6 +7,15 @@ const {run} = Cycle
 const range = (n) => new Array(n).fill().map((_, i) => i)
 const zeroes = (d, ...ds) => !d ? 0 : new Array(d).fill().map(() => zeroes(...ds))
 
+winanimate = () => {
+  anime({
+    targets: '#winner > h1',
+    scale: [0, 1],
+    duration: 3000,
+    easing: 'easeInQuad'
+  })
+}
+
 const puzzles = [
   `
   0, 3, 0, 0, 0, 0, 0, 5, 0,

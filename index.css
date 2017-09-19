@@ -1,17 +1,21 @@
 * {
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
+
 html {
   font-size: 1vmin;
   font-family: sans-serif;
   overflow: hidden;
 }
+
 @media (min-width: 600px) and (min-height: 600px) {
   html {
     font-size: 6px;
   }
 }
+
 body {
   min-height: 100vh;
   display: flex;
@@ -21,20 +25,24 @@ body {
   position: relative;
   touch-action: none;
 }
+
 input[type=number] {
   -moz-appearance: textfield;
 }
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 .sudoku {
   display: grid;
   grid-template-columns: repeat(9, auto);
   grid-gap: 1rem;
   user-select: none;
 }
+
 .sudoku x-cell {
   width: 7rem;
   height: 7rem;
@@ -42,16 +50,51 @@ input[type=number]::-webkit-outer-spin-button {
   text-align: center;
   border: 0.5rem solid #eee;
 }
+
 .sudoku x-cell:nth-child(3),
 .sudoku x-cell:nth-child(6) {
   margin-right: 2rem;
 }
+
 .sudoku x-cell:nth-child(27),
 .sudoku x-cell:nth-child(54) {
   margin-bottom: 2rem;
 }
+
 .sudoku x-cell[disabled] {
   border: none;
   background: #eee;
   font-weight: bold;
+}
+
+#winner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #050d15;
+  color: rgb(252, 133, 47);
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+}
+
+#winner > .video {
+  width: 480px;
+  height: 270px;
+  grid-row: 2 / span 1;
+  grid-column: 1 / span 1;
+  justify-self: center;
+  align-self: center;
+  background: #050d15;
+}
+
+#winner > h1 {
+  font-size: 50px;
+  grid-row: 2 / span 1;
+  grid-column: 1 / span 1;
+  justify-self: center;
+  align-self: center;
+  z-index: 10;
+  /*transform: scale(0);*/
 }
