@@ -8,24 +8,29 @@ const range = (n) => new Array(n).fill().map((_, i) => i)
 const zeroes = (d, ...ds) => !d ? 0 : new Array(d).fill().map(() => zeroes(...ds))
 
 winanimate = () => {
+  const target = document.querySelector('#winner')
   const seq = anime.timeline({
     autoplay: true
   })
-  document.querySelector('#winner > .video').play() // NOTE: The win animation sequence must be played on a user interaction or the video won't play!
   seq
     .add(anime({
       targets: '#winner',
       opacity: [0, 1],
-      duration: 500,
+      duration: 200,
       easing: 'easeInQuad'
     }))
     .add(anime({
       targets: '#winner > h1',
       scale: [0, 1],
       duration: 2000,
-      easing: 'easeInQuad',
+      easing: 'easeOutQuad',
       offset: -300,
     }))
+  seq.begin = function () {
+    // target.querySelector('.video').play() // This won't work as it's not immediately being called upon user interaction! Security rules.
+    target.style.display = 'grid' // Otherwise the element obscures the actual game even when transparent.
+  }
+  target.querySelector('.video').play()
 }
 document.body.addEventListener('click', winanimate)
 
