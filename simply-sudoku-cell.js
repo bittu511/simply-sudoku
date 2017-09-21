@@ -20,7 +20,7 @@ window.customElements.define(
       // Always call super first in constructor
       super()
       // Create the shadow root
-      this.shadow = this.attachShadow({mode: 'open'})
+      this.shadow = this.attachShadow({ mode: 'open' })
       this.shadow.innerHTML = `
         <style>
           :host, :host *, .x-cell * { outline: none; }
