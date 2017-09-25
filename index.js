@@ -32,7 +32,17 @@ const winanimate = () => {
   }
   target.querySelector('.video').play()
 }
-document.body.addEventListener('click', winanimate)
+
+// TODO: Put this in a scope to avoid global pollution
+// TODO: Select the root menu element first
+const overlay = document.querySelector('#menu .overlay')
+const collapse = () => {
+  // TODO: Use anime.js!
+  const target = document.querySelector('#menu')
+  target.style.display = 'none'
+}
+overlay.addEventListener('pointerdown', collapse)
+// TODO: Create a stream of commands to feed into the Cycle app as a source
 
 const puzzles = [
   `
