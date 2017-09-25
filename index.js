@@ -7,7 +7,7 @@ const {run} = Cycle
 const range = (n) => new Array(n).fill().map((_, i) => i)
 const zeroes = (d, ...ds) => !d ? 0 : new Array(d).fill().map(() => zeroes(...ds))
 
-winanimate = () => {
+const winanimate = () => {
   const target = document.querySelector('#winner')
   const seq = anime.timeline({
     autoplay: true
@@ -254,8 +254,7 @@ const drivers = {
   WIN: (board$) => {
     board$.subscribe({
       next: board => {
-        // TODO: Make it FANCEH!
-        setTimeout(() => alert('At last...!! You Win... :('), 200)
+        setTimeout(winanimate, 200)
         window.localStorage.removeItem('board')
       },
       error: () => {},
