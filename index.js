@@ -33,16 +33,39 @@ const winanimate = () => {
   target.querySelector('.video').play()
 }
 
-// TODO: Put this in a scope to avoid global pollution
-// TODO: Select the root menu element first
-const overlay = document.querySelector('#menu .overlay')
-const collapse = () => {
+{
   // TODO: Use anime.js!
-  const target = document.querySelector('#menu')
-  target.style.display = 'none'
+  const menu = document.querySelector('#menu')
+  const icon = document.querySelector('#icon')
+  icon.addEventListener('pointerdown', () => {
+    menu.style.display = 'block'
+  })
+  const overlay = document.querySelector('#menu .overlay')
+  overlay.addEventListener('pointerdown', () => {
+    menu.style.display = 'none'
+  })
+  const about = document.querySelector('#about')
+  about.addEventListener('pointerdown', () => {
+    about.style.display = 'none'
+  })
+  const aboutbutton = menu.querySelector('.about')
+  aboutbutton.addEventListener('pointerdown', () => {
+    about.style.display = 'grid'
+    menu.style.display = 'none'
+  })
+  const how = document.querySelector('#how')
+  how.addEventListener('pointerdown', () => {
+    how.style.display = 'none'
+  })
+  const howbutton = menu.querySelector('.how')
+  howbutton.addEventListener('pointerdown', () => {
+    how.style.display = 'grid'
+    menu.style.display = 'none'
+  })
+  // TODO: New puzzle generation.
+  // TODO: Hint generation: Requires new puzzle generation to show correct hints.
+  // TODO: Implement a command source for the Cycle app to pass the hint query
 }
-overlay.addEventListener('pointerdown', collapse)
-// TODO: Create a stream of commands to feed into the Cycle app as a source
 
 const puzzles = [
   `
