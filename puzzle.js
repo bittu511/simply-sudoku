@@ -124,7 +124,7 @@ const shuffle = (board) => {
   }
   // TODO: Shuffle supercolumns/rows too
   // TODO: Rotate/flip the board for good measure
-  for (let m = 0; m < random(0, 9); m++) {
+  for (let m = 0; m < random(0, 9); m++) { // TODO: Often looks similar.
     remap(board)
   }
   return board
