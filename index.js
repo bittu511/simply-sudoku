@@ -1,4 +1,4 @@
-/* global xstream CycleDOM Cycle anime puzzles */
+/* global xstream CycleDOM Cycle anime puzzles shuffle */
 
 const {default: xs} = xstream // https://github.com/staltz/xstream
 const {makeDOMDriver, h} = CycleDOM
@@ -106,8 +106,7 @@ const main = ({DOM}) => {
 
   /* Model */
 
-  const makeBoard = (puzzle) => puzzle
-    .map((line) => line.map((d) => ({value: d, given: !!d, err: false})))
+  const makeBoard = (puzzle) => puzzle.map((line) => line.map((d) => ({value: d, given: !!d, err: false})))
 
   const checkConflict = (board) => {
     // reset
@@ -157,30 +156,30 @@ const main = ({DOM}) => {
       }
     }
 
-    // // Time-efficient space-inefficient implementation
-    // let collisions = {
-    //   rowwise:       zeroes(9, 10).map(_ => _.map(_ => [])),
-    //   colwise:       zeroes(9, 10).map(_ => _.map(_ => [])),
-    //   supercellwise: zeroes(9, 10).map(_ => _.map(_ => [])),
-    // }
-    // for (let row in board)
-    //   for (let col in board[row]) {
-    //     let cell = board[row][col]
-    //     collisions.rowwise[row][cell.value].push(cell)
-    //     collisions.colwise[col][cell.value].push(cell)
-    //     collisions.supercellwise[(row/3|0)*3 + col/3|0][cell.value].push(cell)
-    //   }
-    // for (let sets in collisions)
-    //   for (let set of collisions[sets])
-    //     for (let i = 1; i < set.length; i++)
-    //       if (set[i].length > 1)
-    //         for (let cell of set[i]) cell.err = true
+    /* // Time-efficient space-inefficient implementation
+    let collisions = {
+      rowwise:       zeroes(9, 10).map(_ => _.map(_ => [])),
+      colwise:       zeroes(9, 10).map(_ => _.map(_ => [])),
+      supercellwise: zeroes(9, 10).map(_ => _.map(_ => [])),
+    }
+    for (let row in board)
+      for (let col in board[row]) {
+        let cell = board[row][col]
+        collisions.rowwise[row][cell.value].push(cell)
+        collisions.colwise[col][cell.value].push(cell)
+        collisions.supercellwise[(row/3|0)*3 + col/3|0][cell.value].push(cell)
+      }
+    for (let sets in collisions)
+      for (let set of collisions[sets])
+        for (let i = 1; i < set.length; i++)
+          if (set[i].length > 1)
+            for (let cell of set[i]) cell.err = true */
 
     return board
   }
 
   const load = window.localStorage.getItem('board')
-  const board = load !== null ? JSON.parse(load) : makeBoard(puzzles[0])
+  const board = load !== null ? JSON.parse(load) : makeBoard(shuffle(puzzles.easy.unsolved))
 
   const board$ = change$.fold(
     (board, {x, y, value}) => {
