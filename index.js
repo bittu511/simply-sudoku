@@ -1,4 +1,4 @@
-/* global xstream CycleDOM Cycle anime */
+/* global xstream CycleDOM Cycle anime puzzles */
 
 const {default: xs} = xstream // https://github.com/staltz/xstream
 const {makeDOMDriver, h} = CycleDOM
@@ -67,20 +67,6 @@ const winanimate = () => {
   // TODO: Implement a command source for the Cycle app to pass the hint query
 }
 
-const puzzles = [
-  `
-  0, 3, 0, 0, 0, 0, 0, 5, 0,
-  0, 0, 8, 0, 9, 1, 3, 0, 0,
-  6, 0, 0, 4, 0, 0, 7, 0, 0,
-  0, 0, 3, 8, 1, 0, 0, 0, 0,
-  0, 0, 6, 0, 0, 0, 2, 0, 0,
-  0, 0, 0, 0, 3, 4, 8, 0, 0,
-  0, 0, 1, 0, 0, 8, 0, 0, 9,
-  0, 0, 4, 1, 2, 0, 6, 0, 0,
-  0, 6, 0, 0, 0, 0, 0, 4, 0
-  `
-]
-
 const main = ({DOM}) => {
   /* Intent */
 
@@ -120,15 +106,8 @@ const main = ({DOM}) => {
 
   /* Model */
 
-  const makePuzzle = (puzzle) => puzzle
-    .split('\n')
-    .filter((line) => line.length) // Remove any decorative empty lines
-    .map((line) => line
-      .replace(/[^\d]/g, '') // Remove any decorative characters
-      .split('')
-      .map((d) => parseInt(d))
-      .map((d) => ({value: d, given: !!d, err: false}))
-    )
+  const makeBoard = (puzzle) => puzzle
+    .map((line) => line.map((d) => ({value: d, given: !!d, err: false})))
 
   const checkConflict = (board) => {
     // reset
@@ -201,7 +180,7 @@ const main = ({DOM}) => {
   }
 
   const load = window.localStorage.getItem('board')
-  const board = load !== null ? JSON.parse(load) : makePuzzle(puzzles[0])
+  const board = load !== null ? JSON.parse(load) : makeBoard(puzzles[0])
 
   const board$ = change$.fold(
     (board, {x, y, value}) => {
