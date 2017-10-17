@@ -107,6 +107,7 @@ const remap = (board) => {
   let j = random(1, 10)
   for (let p = 0; p < board.length; p++) {
     for (let k = 0; k < board[p].length; k++) {
+      // TODO: OBVIOUS BUG IS OBVIOUS↓
       if (board[p][k] === i) { board[p][k] = j }
       if (board[p][k] === j) { board[p][k] = i }
     }
@@ -121,6 +122,8 @@ const shuffle = (board) => {
     rowSwap(random(p, p + 3), random(p, p + 3), board)
     colSwap(random(p, p + 3), random(p, p + 3), board)
   }
+  // TODO: Shuffle supercolumns/rows too
+  // TODO: Rotate/flip the board for good measure
   for (let m = 0; m < random(0, 9); m++) {
     remap(board)
   }
