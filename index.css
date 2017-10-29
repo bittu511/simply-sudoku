@@ -61,7 +61,7 @@ input[type=number]::-webkit-outer-spin-button {
   margin-bottom: 2rem;
 }
 
-.sudoku x-cell[disabled] {
+.sudoku x-cell[disabled] {break
   border: none;
   background: #eee;
   font-weight: bold;
@@ -101,7 +101,7 @@ input[type=number]::-webkit-outer-spin-button {
   bottom: 0;
   left: 0;
   width: 200px;
-  background: green;
+  background: grey;
   max-width: 75vw;
   font-size: 20px;
   padding: 5px;
