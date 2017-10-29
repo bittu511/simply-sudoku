@@ -103,6 +103,8 @@ const colSwap = (j, k, board) => {
 }
 
 const remap = (board) => {
+  // TODO: Make a proper shuffled substitution cypher.
+  // TODO: Make deterministic, please. Consider accepting either a random seed or shuffle.
   let i = random(1, 10)
   let j = random(1, 10)
   for (let p = 0; p < board.length; p++) {
