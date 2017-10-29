@@ -153,8 +153,8 @@ const shuffle = (board) => {
     rowSwap(random(p, p + 3), random(p, p + 3), board)
     colSwap(random(p, p + 3), random(p, p + 3), board)
   }
-  if (random(0, 2) == 1) fliphorizontal()
-  if (random(0, 2) == 1) flipvertical()
+  if (random(0, 2) === 1) fliphorizontal(board)
+  if (random(0, 2) === 1) flipvertical(board)
   if (random(0, 2) < 2) rotation(board)
   for (let m = 0; m < random(0, 9); m++) { // TODO: Often looks similar.
     remap(board)
