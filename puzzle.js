@@ -107,9 +107,40 @@ const remap = (board) => {
   let j = random(1, 10)
   for (let p = 0; p < board.length; p++) {
     for (let k = 0; k < board[p].length; k++) {
-      // TODO: OBVIOUS BUG IS OBVIOUS↓
-      if (board[p][k] === i) { board[p][k] = j }
-      if (board[p][k] === j) { board[p][k] = i }
+      if (board[p][k] === i) {
+        board[p][k] = j
+        continue
+      }
+      if (board[p][k] === j) {
+        board[p][k] = i
+        continue
+      }
+    }
+  }
+  return board
+}
+const flipvertical = (board) => {
+  for (let p = 0; p < board.length; p++) {
+    for (let k = 0; k < board[p].length; k++) {
+      let temp = board[p][k]
+      board[p][k] = board[p][board[p].length - k - 1]
+      board[p][board[p].length - k - 1] = temp
+    }
+  }
+}
+const fliphorizontal = (board) => {
+  for (let p = 0; p < board.length; p++) {
+    let temp = board[p]
+    board[p] = board[board.length - p - 1]
+    board[board.length - p - 1] = temp
+  }
+}
+
+const rotation = (board) => {
+  let temp = clone(board)
+  for (let p = 0; p < board.length; p++) {
+    for (let k = 0; k < board.length; k++) {
+      board[k][board.length - p - 1] = temp[p][k]
     }
   }
   return board
@@ -122,8 +153,9 @@ const shuffle = (board) => {
     rowSwap(random(p, p + 3), random(p, p + 3), board)
     colSwap(random(p, p + 3), random(p, p + 3), board)
   }
-  // TODO: Shuffle supercolumns/rows too
-  // TODO: Rotate/flip the board for good measure
+  if (random(0, 2) == 1) fliphorizontal()
+  if (random(0, 2) == 1) flipvertical()
+  if (random(0, 2) < 2) rotation(board)
   for (let m = 0; m < random(0, 9); m++) { // TODO: Often looks similar.
     remap(board)
   }
