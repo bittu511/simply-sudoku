@@ -179,7 +179,8 @@ const main = ({DOM}) => {
   }
 
   const load = window.localStorage.getItem('board')
-  const board = load !== null ? JSON.parse(load) : makeBoard(shuffle(puzzles.easy.unsolved))
+  const puzzle = shuffle(puzzles.easy)
+  const board = load !== null ? JSON.parse(load) : makeBoard(puzzle.unsolved)
 
   const board$ = change$.fold(
     (board, {x, y, value}) => {

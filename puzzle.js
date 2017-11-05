@@ -102,64 +102,74 @@ const colSwap = (j, k, board) => {
   return board
 }
 
-const remap = (board) => {
-  // TODO: Make a proper shuffled substitution cypher.
-  // TODO: Make deterministic, please. Consider accepting either a random seed or shuffle.
-  let i = random(1, 10)
-  let j = random(1, 10)
-  for (let p = 0; p < board.length; p++) {
-    for (let k = 0; k < board[p].length; k++) {
-      if (board[p][k] === i) {
-        board[p][k] = j
-        continue
-      }
-      if (board[p][k] === j) {
-        board[p][k] = i
-        continue
-      }
-    }
+const remap = (puzzle) => {
+  const array = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  for (let i = array.length - 1; i >= 0; i--) {
+    let j = random(0, i + 1)
+    let temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
   }
-  return board
-}
-const flipvertical = (board) => {
-  for (let p = 0; p < board.length; p++) {
-    for (let k = 0; k < board[p].length; k++) {
-      let temp = board[p][k]
-      board[p][k] = board[p][board[p].length - k - 1]
-      board[p][board[p].length - k - 1] = temp
+  for (let p = 0; p < puzzle.unsolved.length; p++) {
+    for (let k = 0; k < puzzle.unsolved[p].length; k++) {
+      puzzle.unsolved[p][k] = puzzle.unsolved[p][k] ? array[puzzle.unsolved[p][k]] : 0
+      puzzle.solved[p][k] = puzzle.solved[p][k] ? array[puzzle.solved[p][k]] : 0
     }
   }
 }
-const fliphorizontal = (board) => {
-  for (let p = 0; p < board.length; p++) {
-    let temp = board[p]
-    board[p] = board[board.length - p - 1]
-    board[board.length - p - 1] = temp
+const flipvertical = (puzzle) => {
+  for (let p = 0; p < puzzle.unsolved.length; p++) {
+    for (let k = 0; k < puzzle.unsolved[p].length; k++) {
+      let temp = puzzle.unsolved[p][k]
+      puzzle.unsolved[p][k] = puzzle.unsolved[p][puzzle.unsolved[p].length - k - 1]
+      puzzle.unsolved[p][puzzle.unsolved[p].length - k - 1] = temp
+      temp = puzzle.solved[p][k]
+      puzzle.solved[p][k] = puzzle.solved[p][puzzle.solved[p].length - k - 1]
+      puzzle.solved[p][puzzle.solved[p].length - k - 1] = temp
+    }
+  }
+}
+const fliphorizontal = (puzzle) => {
+  for (let p = 0; p < puzzle.unsolved.length; p++) {
+    let temp = puzzle.unsolved[p]
+    puzzle.unsolved[p] = puzzle.unsolved[puzzle.unsolved.length - p - 1]
+    puzzle.unsolved[puzzle.unsolved.length - p - 1] = temp
+    temp = puzzle.solved[p]
+    puzzle.solved[p] = puzzle.solved[puzzle.solved.length - p - 1]
+    puzzle.solved[puzzle.solved.length - p - 1] = temp
   }
 }
 
-const rotation = (board) => {
-  let temp = clone(board)
-  for (let p = 0; p < board.length; p++) {
-    for (let k = 0; k < board.length; k++) {
-      board[k][board.length - p - 1] = temp[p][k]
+const rotation = (puzzle) => {
+  let tempunsolved = clone(puzzle.unsolved)
+  let tempsolved = clone(puzzle.solved)
+  for (let p = 0; p < puzzle.unsolved.length; p++) {
+    for (let k = 0; k < puzzle.unsolved.length; k++) {
+      puzzle.unsolved[k][puzzle.unsolved.length - p - 1] = tempunsolved[p][k]
+      puzzle.solved[k][puzzle.solved.length - p - 1] = tempsolved[p][k]
     }
   }
-  return board
 }
 const random = (i, j) => Math.floor(i + Math.random() * (j - i))
 
-const shuffle = (board) => {
-  board = clone(board)
-  for (let p = 0; p < board.length; p += 3) {
-    rowSwap(random(p, p + 3), random(p, p + 3), board)
-    colSwap(random(p, p + 3), random(p, p + 3), board)
+const shuffle = (puzzle) => {
+  puzzle = {
+    unsolved: clone(puzzle.unsolved),
+    solved: clone(puzzle.solved),
   }
-  if (random(0, 2) === 1) fliphorizontal(board)
-  if (random(0, 2) === 1) flipvertical(board)
-  if (random(0, 2) < 2) rotation(board)
-  for (let m = 0; m < random(0, 9); m++) { // TODO: Often looks similar.
-    remap(board)
+  for (let p = 0; p < puzzle.unsolved.length; p += 3) {
+    let m = random(p, p + 3)
+    let n = random(p, p + 3)
+    let x = random(p, p + 3)
+    let y = random(p, p + 3)
+    rowSwap(m, n, puzzle.unsolved)
+    colSwap(x, y, puzzle.unsolved)
+    rowSwap(m, n, puzzle.solved)
+    colSwap(x, y, puzzle.solved)
   }
-  return board
+  if (random(0, 2) === 1) fliphorizontal(puzzle)
+  if (random(0, 2) === 1) flipvertical(puzzle)
+  if (random(0, 2) < 2) rotation(puzzle)
+  remap(puzzle)
+  return puzzle
 }
