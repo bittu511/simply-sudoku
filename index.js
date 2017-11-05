@@ -62,9 +62,8 @@ const winanimate = () => {
     how.style.display = 'grid'
     menu.style.display = 'none'
   })
-  // TODO: New puzzle generation.
   // TODO: Hint generation: Requires new puzzle generation to show correct hints.
-  // TODO: Implement a command source for the Cycle app to pass the hint query
+  // TODO: Implement a command channel/source for the Cycle app to pass the hint query
 }
 
 const main = ({DOM}) => {
@@ -103,11 +102,13 @@ const main = ({DOM}) => {
     DOM.select('x-cell').events('pointerdown')
       .map(({target}) => ({inc: false, x: parseInt(target.dataset.x), y: parseInt(target.dataset.y)}))
   )
+  // TODO: Won't work, the button isn't in scope of this DOM. Consider the external command channel/source.
+  const newpuzzle$ = DOM.select('#newpuzzle').events('pointerdown')
+    .map(() => 'hard').startWith('load')
 
   /* Model */
 
   const makeBoard = (puzzle) => puzzle.map((line) => line.map((d) => ({value: d, given: !!d, err: false})))
-
   const checkConflict = (board) => {
     // reset
     for (let i of board) {
@@ -178,18 +179,27 @@ const main = ({DOM}) => {
     return board
   }
 
-  const load = window.localStorage.getItem('board')
-  const puzzle = shuffle(puzzles.easy)
-  const board = load !== null ? JSON.parse(load) : makeBoard(puzzle.unsolved)
-
-  const board$ = change$.fold(
-    (board, {x, y, value}) => {
-      board[x][y].value = value
-      return checkConflict(board)
-    },
-    board
-  )
-  // .debug()
+  // Every time a new puzzle is requested...
+  const board$ = newpuzzle$.map((difficulty) => {
+    // ...we create a new stream of board$ that change$.
+    const load = window.localStorage.getItem('board')
+    let puzzle, board
+    if (difficulty === 'load') {
+      // TODO: Need to persist this outside for hints. Instead of just the unsolved board, return puzzle. Refactor dependants.
+      puzzle = shuffle(puzzles.easy)
+      board = load !== null ? JSON.parse(load) : makeBoard(puzzle.unsolved)
+    } else {
+      puzzle = shuffle(puzzles[difficulty])
+      board = makeBoard(puzzle.unsolved)
+    }
+    return change$.fold(
+      (board, {x, y, value}) => {
+        board[x][y].value = value
+        return checkConflict(board)
+      },
+      board
+    )
+  }).flatten()
 
   const focuse$ = movement$
     .fold((focus, movement) => {
