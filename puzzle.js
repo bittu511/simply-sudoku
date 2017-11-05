@@ -112,8 +112,8 @@ const remap = (puzzle) => {
   }
   for (let p = 0; p < puzzle.unsolved.length; p++) {
     for (let k = 0; k < puzzle.unsolved[p].length; k++) {
-      puzzle.unsolved[p][k] = puzzle.unsolved[p][k] ? array[puzzle.unsolved[p][k]] : 0
-      puzzle.solved[p][k] = puzzle.solved[p][k] ? array[puzzle.solved[p][k]] : 0
+      puzzle.unsolved[p][k] = puzzle.unsolved[p][k] ? array[puzzle.unsolved[p][k] - 1] : 0
+      puzzle.solved[p][k] = puzzle.solved[p][k] ? array[puzzle.solved[p][k] - 1] : 0
     }
   }
 }
