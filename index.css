@@ -101,22 +101,43 @@ input[type=number]::-webkit-outer-spin-button {
   bottom: 0;
   left: 0;
   width: 200px;
-  background: grey;
+  background: rgb(231, 237, 236);
   max-width: 75vw;
   font-size: 20px;
   padding: 5px;
-  color: white;
+  color: #999;
+  font-weight: bold;
 }
 
-/*TODO: Make Things Pretty*/
 #menu .sidebar > * {
-  border: 1px solid yellow;
-  border-radius: 25%;
+  border: 0.5rem solid #999;
   padding: 3px;
-  margin: 5px;
+  margin: 8px;
   cursor: pointer;
+  box-shadow: 0 4px 0 #bbb;
+  position: relative;
+  transition: all 0.3s;
 }
-/*TODO: Add HOVER for Buttons*/
+#menu .sidebar > *:after {
+  content: '';
+	position: absolute;
+  bottom: 0; left: 0;
+  width: 100%;
+  height: 0;
+  background: #999;
+	z-index: -1;
+	transition: all 0.3s;
+}
+#menu .sidebar > *:hover {
+  color: rgb(231, 237, 236);
+}
+#menu .sidebar > *:hover:after, #menu .sidebar > *:active:after {
+  height: 100%;
+}
+#menu .sidebar > *:active {
+  top: 4px;
+  box-shadow: none;
+}
 #about, #how {
   position: fixed;
   top: 0;
