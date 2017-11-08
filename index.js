@@ -63,10 +63,10 @@ const winanimate = () => {
     menu.style.display = 'none'
   })
   // TODO: Hint generation: Requires new puzzle generation to show correct hints.
-  // TODO: Implement a command channel/source for the Cycle app to pass the hint query
+  // TODO: Close Menu on NEW.
 }
 
-const main = ({DOM}) => {
+const main = ({DOM, COMMAND}) => {
   /* Intent */
 
   const change$ = DOM
@@ -102,9 +102,10 @@ const main = ({DOM}) => {
     DOM.select('x-cell').events('pointerdown')
       .map(({target}) => ({inc: false, x: parseInt(target.dataset.x), y: parseInt(target.dataset.y)}))
   )
-  // TODO: Won't work, the button isn't in scope of this DOM. Consider the external command channel/source.
-  const newpuzzle$ = DOM.select('#newpuzzle').events('pointerdown')
-    .map(() => 'hard').startWith('load')
+  const newpuzzle$ = COMMAND
+    .filter(({type}) => type === 'new')
+    .map(({data}) => data)
+    .startWith('load')
 
   /* Model */
 
@@ -282,6 +283,28 @@ const drivers = {
       error: () => {},
       complete: () => {}
     })
+  },
+  COMMAND: () => {
+    const $newEasy = document.getElementById('neweasy')
+    const $newModerate = document.getElementById('newmoderate')
+    const $newHard = document.getElementById('newhard')
+
+    const source = xs.create({
+      start: listener => {
+        this.callback = ({target}) => {
+          if (target.id === 'neweasy') return listener.next({type: 'new', data: 'easy'})
+          if (target.id === 'newmoderate') return listener.next({type: 'new', data: 'medium'})
+          if (target.id === 'newhard') return listener.next({type: 'new', data: 'hard'})
+        }
+        $newEasy.addEventListener('pointerdown', this.callback)
+        $newModerate.addEventListener('pointerdown', this.callback)
+        $newHard.addEventListener('pointerdown', this.callback)
+      },
+      stop: listener => {
+        $newEasy.removeEventListener('pointerdown', this.callback)
+      }
+    })
+    return source
   }
 }
 
