@@ -109,7 +109,7 @@ const main = ({DOM, COMMAND}) => {
 
   /* Model */
 
-  const makeBoard = (puzzle) => puzzle.map((line) => line.map((d) => ({value: d, given: !!d, err: false})))
+  const makeBoard = (unsolved) => unsolved.map((line) => line.map((d) => ({value: d, given: !!d, err: false})))
   const checkConflict = (board) => {
     // reset
     for (let i of board) {
@@ -184,21 +184,20 @@ const main = ({DOM, COMMAND}) => {
   const board$ = newpuzzle$.map((difficulty) => {
     // ...we create a new stream of board$ that change$.
     const load = window.localStorage.getItem('board')
-    let puzzle, board
+    let puzzle
     if (difficulty === 'load') {
-      // TODO: Need to persist this outside for hints. Instead of just the unsolved board, return puzzle. Refactor dependants.
       puzzle = shuffle(puzzles.easy)
-      board = load !== null ? JSON.parse(load) : makeBoard(puzzle.unsolved)
+      puzzle.unsolved = load !== null ? JSON.parse(load) : makeBoard(puzzle.unsolved)
     } else {
       puzzle = shuffle(puzzles[difficulty])
-      board = makeBoard(puzzle.unsolved)
+      puzzle.unsolved = makeBoard(puzzle.unsolved)
     }
     return change$.fold(
-      (board, {x, y, value}) => {
-        board[x][y].value = value
-        return checkConflict(board)
+      (puzzle, {x, y, value}) => {
+        puzzle.unsolved[x][y].value = value
+        return {solved: puzzle.solved, unsolved: checkConflict(puzzle.unsolved)}
       },
-      board
+      puzzle
     )
   }).flatten()
 
@@ -221,8 +220,8 @@ const main = ({DOM, COMMAND}) => {
   /* View */
 
   const vdom$ = board$.map(
-    (board) => h('div.sudoku',
-      board
+    (puzzle) => h('div.sudoku',
+      puzzle.unsolved
         .reduce((a, b) => a.concat(b), []) // flatten board
         .map(({value, given, err}, i) => h('x-cell', {
           attrs: {
@@ -239,11 +238,11 @@ const main = ({DOM, COMMAND}) => {
   return {
     DOM: vdom$,
     FOCUS: focuse$.map(({x, y}) => 1 + x * 9 + y),
-    STORE: board$,
-    WIN: board$.filter(board => {
+    STORE: board$.map(puzzle => puzzle.unsolved),
+    WIN: board$.filter(({unsolved}) => {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-          if (board[i][j].value === 0 || board[i][j].err) { return false }
+          if (unsolved[i][j].value === 0 || unsolved[i][j].err) { return false }
         }
       }
       return true
