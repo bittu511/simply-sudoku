@@ -126,6 +126,9 @@ const main = ({DOM, COMMAND}) => {
     .map(({data}) => data)
     .startWith('load')
 
+  const hint$ = COMMAND
+    .filter(({type}) => type === 'hint')
+
   /* Model */
 
   const makeBoard = (unsolved) => unsolved.map((line) => line.map((d) => ({value: d, given: !!d, err: false})))
@@ -211,9 +214,21 @@ const main = ({DOM, COMMAND}) => {
       puzzle = shuffle(puzzles[difficulty])
       puzzle.unsolved = makeBoard(puzzle.unsolved)
     }
-    return change$.fold(
-      (puzzle, {x, y, value}) => {
-        puzzle.unsolved[x][y].value = value
+    const changeHint$ = xs.merge(change$, hint$)
+      .debug()
+    return changeHint$.fold(
+      (puzzle, {x, y, value, type}) => {
+        if (type) {
+          const {x, y} = shuffleArray(puzzle.unsolved
+            .map((row, x) => row.slice(0).map(({value, given, err}, y) => ({value, given, err, x, y})))
+            .reduce((a, b) => a.concat(b), [])
+            .filter(({value, given, err}) => (!given && (err || !value)))
+            // TODO: The filter overzealously skips any inputted values, even potential wrong ones.
+          )[0]
+          puzzle.unsolved[x][y].value = puzzle.solved[x][y]
+        } else {
+          puzzle.unsolved[x][y].value = value
+        }
         return {solved: puzzle.solved, unsolved: checkConflict(puzzle.unsolved)}
       },
       puzzle
@@ -306,6 +321,7 @@ const drivers = {
     const $newEasy = document.getElementById('neweasy')
     const $newModerate = document.getElementById('newmoderate')
     const $newHard = document.getElementById('newhard')
+    const $hint = document.getElementById('hint')
 
     const source = xs.create({
       start: listener => {
@@ -313,13 +329,18 @@ const drivers = {
           if (target.id === 'neweasy') return listener.next({type: 'new', data: 'easy'})
           if (target.id === 'newmoderate') return listener.next({type: 'new', data: 'medium'})
           if (target.id === 'newhard') return listener.next({type: 'new', data: 'hard'})
+          if (target.id === 'hint') return listener.next({type: 'hint'})
         }
         $newEasy.addEventListener('pointerdown', this.callback)
         $newModerate.addEventListener('pointerdown', this.callback)
         $newHard.addEventListener('pointerdown', this.callback)
+        $hint.addEventListener('pointerdown', this.callback)
       },
       stop: listener => {
         $newEasy.removeEventListener('pointerdown', this.callback)
+        $newModerate.removeEventListener('pointerdown', this.callback)
+        $newHard.removeEventListener('pointerdown', this.callback)
+        $hint.removeEventListener('pointerdown', this.callback)
       }
     })
     return source
