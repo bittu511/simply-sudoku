@@ -11,7 +11,7 @@ self.addEventListener('install', e => {
         'libs/cycle-dom.min.js',
         'libs/webcomponents-lite.js',
         'libs/anime.min.js',
-      ].map(r => r + '?' + Math.random())) // DEBUG: Cache invalidation.
+      ].map(r => r + '?' + 'v1.0')) // NOTE: Remember to update cache invalidation.
     })
   )
 })
