@@ -75,7 +75,13 @@ const winanimate = () => {
     how.style.display = 'grid'
     menu.style.display = 'none'
   })
-  // TODO: Hint generation: Requires new puzzle generation to show correct hints.
+  const win = document.querySelector('#winner')
+  win.addEventListener('pointerdown', () => {
+    win.style.opacity = 0
+    win.style.display = 'none'
+    win.querySelector('.video').pause()
+    // win.querySelector('.video').fastSeek(0) // Doesn't work on Chrome yet!
+  })
   // TODO: Close Menu on NEW.
 }
 
