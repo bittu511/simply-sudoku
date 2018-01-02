@@ -6,6 +6,19 @@ const {run} = Cycle
 
 const range = (n) => new Array(n).fill().map((_, i) => i)
 const zeroes = (d, ...ds) => !d ? 0 : new Array(d).fill().map(() => zeroes(...ds))
+const shuffleArray = (array) => {
+  let currentIndex = array.length
+  let temporaryValue
+  let randomIndex
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex -= 1
+    temporaryValue = array[currentIndex]
+    array[currentIndex] = array[randomIndex]
+    array[randomIndex] = temporaryValue
+  }
+  return array
+}
 
 const winanimate = () => {
   const target = document.querySelector('#winner')
