@@ -13,7 +13,7 @@ const puzzles = { // http://elmo.sbs.arizona.edu/sandiway/sudoku/examples.html
   easy: {
     solved: puzzle`
       4, 3, 5, 2, 6, 9, 7, 8, 1,
-      6, 8, 2, 5, 7, 7, 4, 9, 3,
+      6, 8, 2, 5, 7, 1, 4, 9, 3,
       1, 9, 7, 8, 3, 4, 5, 6, 2,
       8, 2, 6, 1, 9, 5, 3, 4, 7,
       3, 7, 4, 6, 8, 2, 9, 1, 5,
