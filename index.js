@@ -82,7 +82,7 @@ const winanimate = () => {
     win.querySelector('.video').pause()
     // win.querySelector('.video').fastSeek(0) // Doesn't work on Chrome yet!
   })
-  // TODO: Close Menu on NEW.
+  // TODO: Close Menu on NEW and HINT.
 }
 
 const main = ({DOM, COMMAND}) => {
