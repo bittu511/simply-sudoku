@@ -11,6 +11,8 @@ self.addEventListener('install', e => {
         'libs/cycle-dom.min.js',
         'libs/webcomponents-lite.js',
         'libs/anime.min.js',
+        'assets/dog-slap.mp4',
+        'assets/fw.mp4',
       ].map(r => r + '?' + 'v1.0')) // NOTE: Remember to update cache invalidation.
     })
   )
