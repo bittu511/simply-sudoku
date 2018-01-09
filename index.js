@@ -47,42 +47,42 @@ const winanimate = () => {
 }
 
 {
-  // TODO: Use anime.js!
+  // NOTE: Consider using anime.js!
   const menu = document.querySelector('#menu')
   const icon = document.querySelector('#icon')
-  icon.addEventListener('pointerdown', () => {
+  icon.addEventListener('pointerup', () => {
     menu.style.display = 'block'
   })
+  const menuClose = () => {
+    setTimeout(() => { menu.style.display = 'none' }, 20) // Needed because of the mobile click passthrough bug.
+  }
   const overlay = document.querySelector('#menu .overlay')
-  overlay.addEventListener('pointerdown', () => {
-    menu.style.display = 'none'
-  })
+  overlay.addEventListener('pointerup', menuClose)
   const about = document.querySelector('#about')
-  about.addEventListener('pointerdown', () => {
+  about.addEventListener('pointerup', () => {
     about.style.display = 'none'
   })
   const aboutbutton = menu.querySelector('.about')
-  aboutbutton.addEventListener('pointerdown', () => {
+  aboutbutton.addEventListener('pointerup', () => {
     about.style.display = 'grid'
-    menu.style.display = 'none'
   })
   const how = document.querySelector('#how')
-  how.addEventListener('pointerdown', () => {
+  how.addEventListener('pointerup', () => {
     how.style.display = 'none'
   })
   const howbutton = menu.querySelector('.how')
-  howbutton.addEventListener('pointerdown', () => {
+  howbutton.addEventListener('pointerup', () => {
     how.style.display = 'grid'
-    menu.style.display = 'none'
   })
   const win = document.querySelector('#winner')
-  win.addEventListener('pointerdown', () => {
+  win.addEventListener('pointerup', () => {
     win.style.opacity = 0
     win.style.display = 'none'
     win.querySelector('.video').pause()
     // win.querySelector('.video').fastSeek(0) // Doesn't work on Chrome yet!
   })
-  // TODO: Close Menu on NEW and HINT.
+  const sidebar = document.querySelector('.sidebar')
+  sidebar.addEventListener('pointerup', menuClose)
 }
 
 const main = ({DOM, COMMAND}) => {
@@ -118,7 +118,7 @@ const main = ({DOM, COMMAND}) => {
         m.inc = true
         return m
       }),
-    DOM.select('x-cell').events('pointerdown')
+    DOM.select('x-cell').events('pointerup')
       .map(({target}) => ({inc: false, x: parseInt(target.dataset.x), y: parseInt(target.dataset.y)}))
   )
   const newpuzzle$ = COMMAND
@@ -330,16 +330,16 @@ const drivers = {
           if (target.id === 'newhard') return listener.next({type: 'new', data: 'hard'})
           if (target.id === 'hint') return listener.next({type: 'hint'})
         }
-        $newEasy.addEventListener('pointerdown', this.callback)
-        $newModerate.addEventListener('pointerdown', this.callback)
-        $newHard.addEventListener('pointerdown', this.callback)
-        $hint.addEventListener('pointerdown', this.callback)
+        $newEasy.addEventListener('pointerup', this.callback)
+        $newModerate.addEventListener('pointerup', this.callback)
+        $newHard.addEventListener('pointerup', this.callback)
+        $hint.addEventListener('pointerup', this.callback)
       },
       stop: listener => {
-        $newEasy.removeEventListener('pointerdown', this.callback)
-        $newModerate.removeEventListener('pointerdown', this.callback)
-        $newHard.removeEventListener('pointerdown', this.callback)
-        $hint.removeEventListener('pointerdown', this.callback)
+        $newEasy.removeEventListener('pointerup', this.callback)
+        $newModerate.removeEventListener('pointerup', this.callback)
+        $newHard.removeEventListener('pointerup', this.callback)
+        $hint.removeEventListener('pointerup', this.callback)
       }
     })
     return source

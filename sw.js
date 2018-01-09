@@ -13,7 +13,7 @@ self.addEventListener('install', e => {
         'libs/anime.min.js',
         'assets/dog-slap.mp4',
         'assets/fw.mp4',
-      ].map(r => r + '?' + 'v1.0.2')) // NOTE: Remember to update cache invalidation.
+      ].map(r => r + '?' + 'v1.0.3')) // NOTE: Remember to update cache invalidation.
     })
   )
 })
