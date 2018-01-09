@@ -223,7 +223,6 @@ const main = ({DOM, COMMAND}) => {
             .map((row, x) => row.slice(0).map(({value, given, err}, y) => ({value, given, err, x, y})))
             .reduce((a, b) => a.concat(b), [])
             .filter(({value, given, err}) => (!given && (err || !value)))
-            // TODO: The filter overzealously skips any inputted values, even potential wrong ones.
           )[0]
           puzzle.unsolved[x][y].value = puzzle.solved[x][y]
         } else {
