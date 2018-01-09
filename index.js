@@ -45,6 +45,7 @@ const winanimate = () => {
   }
   target.querySelector('.video').play()
 }
+// TODO: Likewise, handle playing and stopping of the dog-slap video, else the screen stays on.
 
 {
   // NOTE: Consider using anime.js!
