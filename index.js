@@ -45,7 +45,6 @@ const winanimate = () => {
   }
   target.querySelector('.video').play()
 }
-// TODO: Likewise, handle playing and stopping of the dog-slap video, else the screen stays on.
 
 {
   // NOTE: Consider using anime.js!
@@ -70,10 +69,12 @@ const winanimate = () => {
   const how = document.querySelector('#how')
   how.addEventListener('pointerup', () => {
     how.style.display = 'none'
+    how.querySelector('video').pause()
   })
   const howbutton = menu.querySelector('.how')
   howbutton.addEventListener('pointerup', () => {
     how.style.display = 'grid'
+    how.querySelector('video').play()
   })
   const win = document.querySelector('#winner')
   win.addEventListener('pointerup', () => {
