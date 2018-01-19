@@ -40,10 +40,10 @@ const winanimate = () => {
       offset: -300,
     }))
   seq.begin = function () {
-    // target.querySelector('.video').play() // This won't work as it's not immediately being called upon user interaction! Security rules.
+    // target.querySelector('video').play() // This won't work as it's not immediately being called upon user interaction! Security rules.
     target.style.display = 'grid' // Otherwise the element obscures the actual game even when transparent.
   }
-  target.querySelector('.video').play()
+  target.querySelector('video').play()
 }
 
 {
@@ -80,8 +80,8 @@ const winanimate = () => {
   win.addEventListener('pointerup', () => {
     win.style.opacity = 0
     win.style.display = 'none'
-    win.querySelector('.video').pause()
-    // win.querySelector('.video').fastSeek(0) // Doesn't work on Chrome yet!
+    win.querySelector('video').pause()
+    // win.querySelector('video').fastSeek(0) // Doesn't work on Chrome yet!
   })
   const sidebar = document.querySelector('.sidebar')
   sidebar.addEventListener('pointerup', menuClose)
