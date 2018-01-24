@@ -49,12 +49,47 @@ const winanimate = () => {
 {
   // NOTE: Consider using anime.js!
   const menu = document.querySelector('#menu')
+  const menuseq = anime.timeline({
+    autoplay: false,
+  })
+  menuseq
+    .add({
+      targets: menu.querySelector('.sidebar'),
+      translateX: '0%',
+      easing: 'easeInOutQuart',
+      offset: 0,
+    })
+    .add({
+      targets: menu.querySelector('.overlay'),
+      opacity: 1,
+      easing: 'easeInOutQuart',
+      offset: 0,
+    })
+    .add({
+      targets: menu.querySelectorAll('.sidebar > *'),
+      translateX: '0%',
+      easing: 'easeInQuart',
+      offset: 0,
+      delay: function (el, i, l) {
+        return i * 100
+      },
+      duration: 500
+    })
+  menuseq.update = function (a) {
+    if (a.progress <= 0.00001) {
+      if (!a.reversed) menu.style.display = 'block'
+      else menu.style.display = 'none'
+    }
+  }
   const icon = document.querySelector('#icon')
   icon.addEventListener('pointerup', () => {
-    menu.style.display = 'block'
+    menuseq.restart()
+    console.log('play')
   })
   const menuClose = () => {
-    setTimeout(() => { menu.style.display = 'none' }, 20) // Needed because of the mobile click passthrough bug.
+    console.log('reverse')
+    menuseq.reverse()
+    menuseq.play()
   }
   const overlay = document.querySelector('#menu .overlay')
   overlay.addEventListener('pointerup', menuClose)
