@@ -14,7 +14,7 @@ self.addEventListener('install', e => {
         'assets/dog-slap.mp4',
         'assets/fw.mp4',
         'assets/github.x32.png'
-      ].map(r => r + '?' + 'v1.0.4')) // NOTE: Remember to update cache invalidation.
+      ].map(r => r + '?' + 'v1.0.5')) // NOTE: Remember to update cache invalidation.
     })
   )
 })
