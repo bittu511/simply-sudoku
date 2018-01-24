@@ -75,7 +75,7 @@ const winanimate = () => {
       },
       duration: 500
     })
-  menuseq.update = function (a) {
+  menuseq.update = function (a) { // NOTE: This is disgusting, we must be doing something wrong.
     if (a.progress <= 0.00001) {
       if (!a.reversed) menu.style.display = 'block'
       else menu.style.display = 'none'
