@@ -1,0 +1,54 @@
+# Markup
+- #game
+- #menu
+  - .sidebar
+    - .puzzle-easy
+    - .puzzle-normal
+    - .puzzle-hard
+    - .hint
+    - .howtoplay
+    - .about
+  - .dialogs
+    - .howtoplay
+    - .about
+    - .win
+  - .overlay
+
+# Logic
+- game/
+  - board/
+    - main.js
+    - intent.js
+    - model.js
+    - view.js
+    - drivers.js
+      - SAVE
+      - LOAD
+      - DOM
+      - FOCUS
+      - DIALOG
+      - COMMAND
+  - cell.js
+  - puzzle.js
+      - instance methods
+        - constructor(difficulty)
+        - set()
+        - get()
+        - dump()
+        - check()
+        - hint()
+      - static methods
+        - save(key, puzzle)
+        - load(key)
+- menu/
+  - dialogs.js
+    - show(dialog)
+    - hide(dialog)
+  - sidebar.js
+    - show()
+    - hide()
+    - button hookups
+    - new puzzle and hint buttons trigger commands
+    - howtoplay and about show dialogs
+  - overlay.js
+    - show(hideCallback)
