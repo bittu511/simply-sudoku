@@ -242,11 +242,15 @@ const main = ({DOM, COMMAND}) => {
   // Every time a new puzzle is requested...
   const board$ = newpuzzle$.map((difficulty) => {
     // ...we create a new stream of board$ that change$.
-    const load = window.localStorage.getItem('board')
+    const load = window.localStorage.getItem('puzzle')
     let puzzle
     if (difficulty === 'load') {
-      puzzle = shuffle(puzzles.easy)
-      puzzle.unsolved = load !== null ? JSON.parse(load) : makeBoard(puzzle.unsolved)
+      if (load !== null) {
+        puzzle = JSON.parse(load)
+      } else {
+        puzzle = shuffle(puzzles.easy)
+        puzzle.unsolved = makeBoard(puzzle.unsolved)
+      }
     } else {
       puzzle = shuffle(puzzles[difficulty])
       puzzle.unsolved = makeBoard(puzzle.unsolved)
@@ -308,7 +312,7 @@ const main = ({DOM, COMMAND}) => {
   return {
     DOM: vdom$,
     FOCUS: focuse$.map(({x, y}) => 1 + x * 9 + y),
-    STORE: board$.map(puzzle => puzzle.unsolved),
+    STORE: board$,
     WIN: board$.filter(({unsolved}) => {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
@@ -334,10 +338,8 @@ const drivers = {
   },
   STORE: (board$) => {
     board$.subscribe({
-      next: board => {
-        const key = 'board'
-        const val = JSON.stringify(board)
-        window.localStorage.setItem(key, val)
+      next: puzzle => {
+        window.localStorage.setItem('puzzle', JSON.stringify(puzzle))
       },
       error: () => {},
       complete: () => {}
