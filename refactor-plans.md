@@ -52,3 +52,4 @@
     - howtoplay and about show dialogs
   - overlay.js
     - show(hideCallback)
+
