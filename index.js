@@ -293,25 +293,26 @@ const main = ({DOM, COMMAND}) => {
 
   /* View */
 
-  const vdom$ = board$.map(
-    (puzzle) => h('div.sudoku',
-      puzzle.unsolved
-        .reduce((a, b) => a.concat(b), []) // flatten board
-        .map(({value, given, err}, i) => h('x-cell', {
-          attrs: {
-            'data-x': i / 9 | 0, // Decided to put coords in data,
-            'data-y': i % 9, // makes no diff than calculating it during 'intent' really
-            'err': err, // Flagging errors in custom attr instead of class to preserve focus
-            'value': value,
-            'disabled': given
-          }
-        }))
+  const vdom$ = xs.combine(board$, focuse$.map(({x, y}) => 1 + x * 9 + y))
+    .map(
+      ([puzzle, focus]) => h('div.sudoku',
+        puzzle.unsolved
+          .reduce((a, b) => a.concat(b), []) // flatten board
+          .map(({value, given, err}, i) => h('x-cell', {
+            attrs: {
+              'data-x': i / 9 | 0, // Decided to put coords in data,
+              'data-y': i % 9, // makes no diff than calculating it during 'intent' really
+              'err': err, // Flagging errors in custom attr instead of class to preserve focus
+              'value': value,
+              'disabled': given,
+              'focus': i === focus
+            }
+          }))
+      )
     )
-  )
 
   return {
     DOM: vdom$,
-    FOCUS: focuse$.map(({x, y}) => 1 + x * 9 + y),
     STORE: board$,
     WIN: board$.filter(({unsolved}) => {
       for (let i = 0; i < 9; i++) {
@@ -326,16 +327,6 @@ const main = ({DOM, COMMAND}) => {
 
 const drivers = {
   DOM: makeDOMDriver('#container'),
-  FOCUS: (focuse$) => { // Custom driver to focus elements.
-    focuse$.subscribe({
-      next: i => {
-        const cell = document.querySelector(`#container .sudoku x-cell:nth-child(${i})`)
-        cell.focus()
-      },
-      error: () => {},
-      complete: () => {}
-    })
-  },
   STORE: (board$) => {
     board$.subscribe({
       next: puzzle => {
