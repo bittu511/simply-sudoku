@@ -3,6 +3,7 @@
 *   value     - integer   constrained to 0~9
 *   disabled  - boolean
 *   err       - boolean
+*   focus     - boolean
 * Behaviors:
 *   Clicking displays the radial menu centered on the element
 *   Clicking on a radial triggers the `valueChanged` event and then closes it
@@ -91,11 +92,11 @@ window.customElements.define(
         this.shadow.querySelector('.x-cell > .cell').focus()
       })
     }
-    static get observedAttributes () { return ['value', 'disabled', 'err'] }
+    static get observedAttributes () { return ['value', 'disabled', 'err', 'focus'] }
     attributeChangedCallback (attr, oldValue, newValue) {
       switch (attr) {
         case 'focus': 
-          this.focus()
+          if ((this.hasAttribute('focus')) this.focus()
           break
         default: 
           this.render()
