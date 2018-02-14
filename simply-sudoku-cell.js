@@ -93,7 +93,13 @@ window.customElements.define(
     }
     static get observedAttributes () { return ['value', 'disabled', 'err'] }
     attributeChangedCallback (attr, oldValue, newValue) {
-      this.render()
+      switch (attr) {
+        case 'focus': 
+          this.focus()
+          break
+        default: 
+          this.render()
+      }
     }
     render () {
       const root = this.shadow.querySelector('.x-cell')
